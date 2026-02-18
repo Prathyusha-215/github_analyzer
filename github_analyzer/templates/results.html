@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,39 +11,73 @@
         body {
             background-color: #f8f9fa;
         }
+
         .results-header {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
         }
+
         .card {
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .metric-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
+
         .status-success {
             color: #28a745;
             font-weight: bold;
         }
+
         .status-error {
             color: #dc3545;
             font-weight: bold;
         }
+
         .status-warning {
             color: #ffc107;
             font-weight: bold;
         }
+
         .table-responsive {
             border-radius: 10px;
             overflow: hidden;
         }
+
+        .read-more-link {
+            color: #0d6efd;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .read-more-link:hover {
+            text-decoration: underline;
+        }
+
+        .text-full {
+            display: none;
+        }
+
+        .text-truncate-cell {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
+
 <body>
     <div class="results-header">
         <div class="container">
@@ -119,7 +154,8 @@
                             Download Results
                         </h5>
                         <p class="card-text">Get the complete evaluation report in Excel format</p>
-                        <a href="{{ url_for('download_file', filename=output_filename) }}" class="btn btn-success btn-lg">
+                        <a href="{{ url_for('download_file', filename=output_filename) }}"
+                            class="btn btn-success btn-lg">
                             <i class="fas fa-file-excel me-2"></i>
                             Download Excel Report
                         </a>
@@ -155,49 +191,96 @@
                                 <tbody>
                                     {% for result in results %}
                                     <tr>
-                                            <td><strong>{{ result.Student or 'N/A' }}</strong></td>
-                                            <td>
-                                                {% if result['GitHub Link'] %}
-                                                    <a href="{{ result['GitHub Link'] }}" target="_blank">{{ result['GitHub Link'] }}</a>
-                                                {% else %}
-                                                    <span class="text-muted">N/A</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if result['Repo Found'] %}
-                                                    <span class="badge bg-success">{{ result['Repo Found'] }}</span>
-                                                {% else %}
-                                                    <span class="badge bg-danger">No Repo</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if result['Notebook Found'] %}
-                                                    <span class="badge bg-info">{{ result['Notebook Found'] }}</span>
-                                                {% else %}
-                                                    <span class="badge bg-danger">No Notebook</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if result.Positives %}
-                                                    <small>{{ result.Positives[:100] }}{% if result.Positives|length > 100 %}...{% endif %}</small>
-                                                {% else %}
-                                                    <span class="text-muted">None</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if result.Negatives %}
-                                                    <small>{{ result.Negatives[:100] }}{% if result.Negatives|length > 100 %}...{% endif %}</small>
-                                                {% else %}
-                                                    <span class="text-muted">None</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if result.Improvements %}
-                                                    <small>{{ result.Improvements[:100] }}{% if result.Improvements|length > 100 %}...{% endif %}</small>
-                                                {% else %}
-                                                    <span class="text-muted">None</span>
-                                                {% endif %}
-                                            </td>
+                                        <td><strong>{{ result.student_name or 'N/A' }}</strong></td>
+                                        <td>
+                                            {% if result.github_link %}
+                                            <a href="{{ result.github_link }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">
+                                                <i class="fab fa-github me-1"></i> View Repo
+                                            </a>
+                                            {% else %}
+                                            <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.repo_found != 'No' and result.repo_found is not none %}
+                                            <span class="badge bg-success text-truncate-cell"
+                                                title="{{ result.repo_found }}">{{ result.repo_found }}</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">No Repo</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.notebook_found != 'No' and result.notebook_found is not none %}
+                                            <span class="badge bg-info text-truncate-cell"
+                                                title="{{ result.notebook_found }}">{{ result.notebook_found }}</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">No Notebook</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.positives %}
+                                            {% if result.positives|length > 100 %}
+                                            <div>
+                                                <span class="text-short"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.positives[:100] }}...</span>
+                                                <span class="text-full"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.positives }}</span>
+                                                <br>
+                                                <a class="read-more-link" onclick="toggleText(this)">Read More</a>
+                                            </div>
+                                            {% else %}
+                                            <div style="white-space: pre-wrap; font-size: 0.875rem;">{{ result.positives
+                                                }}</div>
+                                            {% endif %}
+                                            {% else %}
+                                            <span class="text-muted">None</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.negatives %}
+                                            {% if result.negatives|length > 100 %}
+                                            <div>
+                                                <span class="text-short"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.negatives[:100] }}...</span>
+                                                <span class="text-full"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.negatives }}</span>
+                                                <br>
+                                                <a class="read-more-link" onclick="toggleText(this)">Read More</a>
+                                            </div>
+                                            {% else %}
+                                            <div style="white-space: pre-wrap; font-size: 0.875rem;">{{ result.negatives
+                                                }}</div>
+                                            {% endif %}
+                                            {% else %}
+                                            <span class="text-muted">None</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.improvements %}
+                                            {% if result.improvements|length > 100 %}
+                                            <div>
+                                                <span class="text-short"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.improvements[:100] }}...</span>
+                                                <span class="text-full"
+                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                    result.improvements }}</span>
+                                                <br>
+                                                <a class="read-more-link" onclick="toggleText(this)">Read More</a>
+                                            </div>
+                                            {% else %}
+                                            <div style="white-space: pre-wrap; font-size: 0.875rem;">{{
+                                                result.improvements }}</div>
+                                            {% endif %}
+                                            {% else %}
+                                            <span class="text-muted">None</span>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -220,5 +303,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleText(element) {
+            const container = element.parentElement;
+            const shortText = container.querySelector('.text-short');
+            const fullText = container.querySelector('.text-full');
+
+            if (fullText.style.display === 'none' || fullText.style.display === '') {
+                shortText.style.display = 'none';
+                fullText.style.display = 'inline';
+                element.textContent = 'Read Less';
+            } else {
+                shortText.style.display = 'inline';
+                fullText.style.display = 'none';
+                element.textContent = 'Read More';
+            }
+        }
+    </script>
 </body>
+
 </html>

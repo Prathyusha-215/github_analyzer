@@ -5,3 +5,8 @@ PyGithub
 nbformat
 python-dotenv
 groq
+fastapi
+uvicorn
+python-multipart
+aiofiles
+jinja2
