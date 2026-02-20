@@ -35,7 +35,7 @@ class Config:
 
     # Processing settings
     MAX_WORKERS = 1
-    DELAY_BETWEEN_STUDENTS = 2
+    DELAY_BETWEEN_STUDENTS = 12
 
     # API keys
     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")

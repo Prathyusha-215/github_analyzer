@@ -1032,3 +1032,471 @@
 2026-02-18 15:44:15,923 - GitHubAnalyzer - WARNING - No notebook found in TekWorks for Muda Rohit
 2026-02-18 15:44:15,984 - GitHubAnalyzer - INFO - Successfully wrote results to C:\Users\DELL\Desktop\github\github_analyzer\outputs\evaluation_20260218_154415.xlsx
 2026-02-18 15:44:15,985 - GitHubAnalyzer - INFO - Task 63331a1f-ae30-490b-81d2-efc5c507e2bc completed successfully.
+2026-02-19 16:00:56,487 - GitHubAnalyzer - INFO - Starting background task 21730816-0cae-4abc-9bd6-38f2afcd054f
+2026-02-19 16:00:56,871 - GitHubAnalyzer - INFO - Removed 2 duplicate entries
+2026-02-19 16:00:56,874 - GitHubAnalyzer - INFO - Successfully processed 55 student entries
+2026-02-19 16:00:56,876 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Marella Haripriya', 'github link': 'https://github.com/HARIPRIYAMARELLA/tranasction_analysis'}
+2026-02-19 16:00:56,876 - GitHubAnalyzer - INFO - Extracted - Name: Marella Haripriya, GitHub URL: https://github.com/HARIPRIYAMARELLA/tranasction_analysis
+2026-02-19 16:00:59,588 - GitHubAnalyzer - INFO - Downloading notebook for Marella Haripriya...
+2026-02-19 16:01:03,461 - GitHubAnalyzer - INFO - Analyzing notebook for Marella Haripriya...
+2026-02-19 16:01:08,573 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:01:11,332 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:01:11,334 - GitHubAnalyzer - INFO - Successfully processed Marella Haripriya
+2026-02-19 16:01:11,334 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Neerukonda Sriram', 'github link': 'https://github.com/SriramNeerukonda14/tranasction_analysis'}
+2026-02-19 16:01:11,335 - GitHubAnalyzer - INFO - Extracted - Name: Neerukonda Sriram, GitHub URL: https://github.com/SriramNeerukonda14/tranasction_analysis
+2026-02-19 16:01:13,382 - GitHubAnalyzer - INFO - Downloading notebook for Neerukonda Sriram...
+2026-02-19 16:01:14,363 - GitHubAnalyzer - INFO - Analyzing notebook for Neerukonda Sriram...
+2026-02-19 16:01:19,265 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:01:21,318 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:01:21,319 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:01:51,402 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:01:51,405 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-19 16:02:51,494 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:02:51,500 - GitHubAnalyzer - ERROR - Error processing Neerukonda Sriram: Error calling Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kg4y7538e7fsp6s9waqcw2va` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99875, Requested 1233. Please try again in 15m57.312s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+2026-02-19 16:02:51,515 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Rishi Ankathi', 'github link': 'https://github.com/Rishi-Ankathi/trcsDataAnalysis'}
+2026-02-19 16:02:51,516 - GitHubAnalyzer - INFO - Extracted - Name: Rishi Ankathi, GitHub URL: https://github.com/Rishi-Ankathi/trcsDataAnalysis
+2026-02-19 16:02:54,627 - GitHubAnalyzer - INFO - Downloading notebook for Rishi Ankathi...
+2026-02-19 16:02:55,558 - GitHubAnalyzer - INFO - Analyzing notebook for Rishi Ankathi...
+2026-02-19 16:03:41,714 - GitHubAnalyzer - INFO - Starting background task 52078eda-0a7b-4586-b375-bc2133af88d5
+2026-02-19 16:03:42,109 - GitHubAnalyzer - INFO - Removed 2 duplicate entries
+2026-02-19 16:03:42,113 - GitHubAnalyzer - INFO - Successfully processed 55 student entries
+2026-02-19 16:03:42,116 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Marella Haripriya', 'github link': 'https://github.com/HARIPRIYAMARELLA/tranasction_analysis'}
+2026-02-19 16:03:42,116 - GitHubAnalyzer - INFO - Extracted - Name: Marella Haripriya, GitHub URL: https://github.com/HARIPRIYAMARELLA/tranasction_analysis
+2026-02-19 16:03:44,827 - GitHubAnalyzer - INFO - Downloading notebook for Marella Haripriya...
+2026-02-19 16:03:45,522 - GitHubAnalyzer - INFO - Analyzing notebook for Marella Haripriya...
+2026-02-19 16:03:50,557 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:04:02,661 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:04:02,666 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:04:32,778 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:04:32,781 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-19 16:05:32,861 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:05:32,862 - GitHubAnalyzer - ERROR - Error processing Marella Haripriya: Error calling Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kg4y7538e7fsp6s9waqcw2va` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99688, Requested 1206. Please try again in 12m52.416s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+2026-02-19 16:05:32,862 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Neerukonda Sriram', 'github link': 'https://github.com/SriramNeerukonda14/tranasction_analysis'}
+2026-02-19 16:05:32,863 - GitHubAnalyzer - INFO - Extracted - Name: Neerukonda Sriram, GitHub URL: https://github.com/SriramNeerukonda14/tranasction_analysis
+2026-02-19 16:05:35,554 - GitHubAnalyzer - INFO - Downloading notebook for Neerukonda Sriram...
+2026-02-19 16:05:36,209 - GitHubAnalyzer - INFO - Analyzing notebook for Neerukonda Sriram...
+2026-02-19 16:05:41,121 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:05:53,198 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:05:53,199 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:06:23,330 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:06:23,331 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-19 16:07:23,440 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:07:23,450 - GitHubAnalyzer - ERROR - Error processing Neerukonda Sriram: Error calling Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kg4y7538e7fsp6s9waqcw2va` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99560, Requested 1253. Please try again in 11m42.432s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+2026-02-19 16:07:23,472 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Rishi Ankathi', 'github link': 'https://github.com/Rishi-Ankathi/trcsDataAnalysis'}
+2026-02-19 16:07:23,473 - GitHubAnalyzer - INFO - Extracted - Name: Rishi Ankathi, GitHub URL: https://github.com/Rishi-Ankathi/trcsDataAnalysis
+2026-02-19 16:07:27,242 - GitHubAnalyzer - INFO - Downloading notebook for Rishi Ankathi...
+2026-02-19 16:07:28,227 - GitHubAnalyzer - INFO - Analyzing notebook for Rishi Ankathi...
+2026-02-19 16:07:33,155 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:07:45,250 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:07:45,251 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:24:31,633 - GitHubAnalyzer - INFO - Starting background task d3ad5d58-7068-48a7-a925-946477b13504
+2026-02-19 16:24:32,052 - GitHubAnalyzer - INFO - Removed 2 duplicate entries
+2026-02-19 16:24:32,054 - GitHubAnalyzer - INFO - Successfully processed 55 student entries
+2026-02-19 16:24:32,056 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Marella Haripriya', 'github link': 'https://github.com/HARIPRIYAMARELLA/tranasction_analysis'}
+2026-02-19 16:24:32,057 - GitHubAnalyzer - INFO - Extracted - Name: Marella Haripriya, GitHub URL: https://github.com/HARIPRIYAMARELLA/tranasction_analysis
+2026-02-19 16:24:34,950 - GitHubAnalyzer - INFO - Downloading notebook for Marella Haripriya...
+2026-02-19 16:24:36,111 - GitHubAnalyzer - INFO - Analyzing notebook for Marella Haripriya...
+2026-02-19 16:24:41,264 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:24:53,412 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:24:53,418 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:25:23,538 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:25:23,538 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-19 16:26:23,641 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:26:23,641 - GitHubAnalyzer - ERROR - Error processing Marella Haripriya: Error calling Groq API: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kg4y7538e7fsp6s9waqcw2va` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98907, Requested 1262. Please try again in 2m26.016s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+2026-02-19 16:26:23,642 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Neerukonda Sriram', 'github link': 'https://github.com/SriramNeerukonda14/tranasction_analysis'}
+2026-02-19 16:26:23,642 - GitHubAnalyzer - INFO - Extracted - Name: Neerukonda Sriram, GitHub URL: https://github.com/SriramNeerukonda14/tranasction_analysis
+2026-02-19 16:26:26,365 - GitHubAnalyzer - INFO - Downloading notebook for Neerukonda Sriram...
+2026-02-19 16:26:27,307 - GitHubAnalyzer - INFO - Analyzing notebook for Neerukonda Sriram...
+2026-02-19 16:26:32,348 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:26:44,460 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:26:44,461 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:27:14,586 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:27:14,589 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-19 16:28:14,686 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:28:14,688 - groq._base_client - INFO - Retrying request to /openai/v1/chat/completions in 18.000000 seconds
+2026-02-19 16:28:33,273 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:28:33,275 - GitHubAnalyzer - INFO - Successfully processed Neerukonda Sriram
+2026-02-19 16:28:33,276 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Rishi Ankathi', 'github link': 'https://github.com/Rishi-Ankathi/trcsDataAnalysis'}
+2026-02-19 16:28:33,276 - GitHubAnalyzer - INFO - Extracted - Name: Rishi Ankathi, GitHub URL: https://github.com/Rishi-Ankathi/trcsDataAnalysis
+2026-02-19 16:28:36,255 - GitHubAnalyzer - INFO - Downloading notebook for Rishi Ankathi...
+2026-02-19 16:28:37,600 - GitHubAnalyzer - INFO - Analyzing notebook for Rishi Ankathi...
+2026-02-19 16:28:42,829 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-19 16:28:54,943 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:28:54,944 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 1/3). Sleeping for 30 seconds...
+2026-02-19 16:29:25,029 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-02-19 16:29:25,030 - GitHubAnalyzer - WARNING - Evaluation rate limit hit (Attempt 2/3). Sleeping for 60 seconds...
+2026-02-20 10:16:03,295 - GitHubAnalyzer - INFO - Starting background task 955404d9-6093-466f-b9ab-9fb7de090fe5
+2026-02-20 10:16:03,975 - GitHubAnalyzer - INFO - Successfully processed 3 student entries
+2026-02-20 10:16:03,978 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Marella Haripriya', 'github link': 'https://github.com/HARIPRIYAMARELLA/tranasction_analysis'}
+2026-02-20 10:16:03,978 - GitHubAnalyzer - INFO - Extracted - Name: Marella Haripriya, GitHub URL: https://github.com/HARIPRIYAMARELLA/tranasction_analysis
+2026-02-20 10:16:06,915 - GitHubAnalyzer - INFO - Downloading notebook for Marella Haripriya...
+2026-02-20 10:16:07,916 - GitHubAnalyzer - INFO - Analyzing notebook for Marella Haripriya...
+2026-02-20 10:16:13,070 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:16:25,796 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:16:25,798 - GitHubAnalyzer - INFO - Successfully processed Marella Haripriya
+2026-02-20 10:16:25,799 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Neerukonda Sriram', 'github link': 'https://github.com/SriramNeerukonda14/tranasction_analysis'}
+2026-02-20 10:16:25,799 - GitHubAnalyzer - INFO - Extracted - Name: Neerukonda Sriram, GitHub URL: https://github.com/SriramNeerukonda14/tranasction_analysis
+2026-02-20 10:16:27,789 - GitHubAnalyzer - INFO - Downloading notebook for Neerukonda Sriram...
+2026-02-20 10:16:28,722 - GitHubAnalyzer - INFO - Analyzing notebook for Neerukonda Sriram...
+2026-02-20 10:16:33,667 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:16:46,251 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:16:46,255 - GitHubAnalyzer - INFO - Successfully processed Neerukonda Sriram
+2026-02-20 10:16:46,256 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Rishi Ankathi', 'github link': 'https://github.com/Rishi-Ankathi/trcsDataAnalysis'}
+2026-02-20 10:16:46,257 - GitHubAnalyzer - INFO - Extracted - Name: Rishi Ankathi, GitHub URL: https://github.com/Rishi-Ankathi/trcsDataAnalysis
+2026-02-20 10:16:48,284 - GitHubAnalyzer - INFO - Downloading notebook for Rishi Ankathi...
+2026-02-20 10:16:49,299 - GitHubAnalyzer - INFO - Analyzing notebook for Rishi Ankathi...
+2026-02-20 10:16:54,146 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:17:06,975 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:17:06,977 - GitHubAnalyzer - INFO - Successfully processed Rishi Ankathi
+2026-02-20 10:17:07,014 - GitHubAnalyzer - INFO - Successfully wrote results to C:\Users\DELL\Desktop\github\github_analyzer\outputs\evaluation_20260220_101706.xlsx
+2026-02-20 10:17:07,014 - GitHubAnalyzer - INFO - Task 955404d9-6093-466f-b9ab-9fb7de090fe5 completed successfully.
+2026-02-20 10:17:30,246 - GitHubAnalyzer - INFO - Starting background task aa15afdf-d35f-4b2b-a152-a17685f0b66d
+2026-02-20 10:17:30,332 - GitHubAnalyzer - INFO - Removed 2 duplicate entries
+2026-02-20 10:17:30,334 - GitHubAnalyzer - INFO - Successfully processed 55 student entries
+2026-02-20 10:17:30,335 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Marella Haripriya', 'github link': 'https://github.com/HARIPRIYAMARELLA/tranasction_analysis'}
+2026-02-20 10:17:30,335 - GitHubAnalyzer - INFO - Extracted - Name: Marella Haripriya, GitHub URL: https://github.com/HARIPRIYAMARELLA/tranasction_analysis
+2026-02-20 10:17:33,101 - GitHubAnalyzer - INFO - Downloading notebook for Marella Haripriya...
+2026-02-20 10:17:33,741 - GitHubAnalyzer - INFO - Analyzing notebook for Marella Haripriya...
+2026-02-20 10:17:38,474 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:17:51,064 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:17:51,067 - GitHubAnalyzer - INFO - Successfully processed Marella Haripriya
+2026-02-20 10:17:51,067 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Neerukonda Sriram', 'github link': 'https://github.com/SriramNeerukonda14/tranasction_analysis'}
+2026-02-20 10:17:51,068 - GitHubAnalyzer - INFO - Extracted - Name: Neerukonda Sriram, GitHub URL: https://github.com/SriramNeerukonda14/tranasction_analysis
+2026-02-20 10:17:53,045 - GitHubAnalyzer - INFO - Downloading notebook for Neerukonda Sriram...
+2026-02-20 10:17:53,649 - GitHubAnalyzer - INFO - Analyzing notebook for Neerukonda Sriram...
+2026-02-20 10:17:58,430 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:11,196 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:11,200 - GitHubAnalyzer - INFO - Successfully processed Neerukonda Sriram
+2026-02-20 10:18:11,200 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Rishi Ankathi', 'github link': 'https://github.com/Rishi-Ankathi/trcsDataAnalysis'}
+2026-02-20 10:18:11,200 - GitHubAnalyzer - INFO - Extracted - Name: Rishi Ankathi, GitHub URL: https://github.com/Rishi-Ankathi/trcsDataAnalysis
+2026-02-20 10:18:13,245 - GitHubAnalyzer - INFO - Downloading notebook for Rishi Ankathi...
+2026-02-20 10:18:13,974 - GitHubAnalyzer - INFO - Analyzing notebook for Rishi Ankathi...
+2026-02-20 10:18:18,880 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:31,583 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:31,585 - GitHubAnalyzer - INFO - Successfully processed Rishi Ankathi
+2026-02-20 10:18:31,585 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Nikhil Bontha', 'github link': 'https://github.com/nikhilbontha/task_transactionsdata'}
+2026-02-20 10:18:31,585 - GitHubAnalyzer - INFO - Extracted - Name: Nikhil Bontha, GitHub URL: https://github.com/nikhilbontha/task_transactionsdata
+2026-02-20 10:18:33,646 - GitHubAnalyzer - INFO - Downloading notebook for Nikhil Bontha...
+2026-02-20 10:18:34,670 - GitHubAnalyzer - INFO - Analyzing notebook for Nikhil Bontha...
+2026-02-20 10:18:39,700 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:52,316 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:18:52,320 - GitHubAnalyzer - INFO - Successfully processed Nikhil Bontha
+2026-02-20 10:18:52,320 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'B.Brahmma Reddy', 'github link': 'https://github.com/brahmmareddy-123/Transaction-Data-Analysis'}
+2026-02-20 10:18:52,321 - GitHubAnalyzer - INFO - Extracted - Name: B.Brahmma Reddy, GitHub URL: https://github.com/brahmmareddy-123/Transaction-Data-Analysis
+2026-02-20 10:18:54,331 - GitHubAnalyzer - INFO - Downloading notebook for B.Brahmma Reddy...
+2026-02-20 10:18:55,298 - GitHubAnalyzer - INFO - Analyzing notebook for B.Brahmma Reddy...
+2026-02-20 10:19:00,305 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:13,056 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:13,061 - GitHubAnalyzer - INFO - Successfully processed B.Brahmma Reddy
+2026-02-20 10:19:13,062 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Seggem Sai Harshitha', 'github link': 'https://github.com/HarshithaSeggem/Tranasction_analysis'}
+2026-02-20 10:19:13,063 - GitHubAnalyzer - INFO - Extracted - Name: Seggem Sai Harshitha, GitHub URL: https://github.com/HarshithaSeggem/Tranasction_analysis
+2026-02-20 10:19:15,115 - GitHubAnalyzer - INFO - Downloading notebook for Seggem Sai Harshitha...
+2026-02-20 10:19:15,983 - GitHubAnalyzer - INFO - Analyzing notebook for Seggem Sai Harshitha...
+2026-02-20 10:19:20,845 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:33,759 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:33,763 - GitHubAnalyzer - INFO - Successfully processed Seggem Sai Harshitha
+2026-02-20 10:19:33,764 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Balija Akash', 'github link': 'https://github.com/AKASHAKKI26/Transaction-Data-Analysis'}
+2026-02-20 10:19:33,765 - GitHubAnalyzer - INFO - Extracted - Name: Balija Akash, GitHub URL: https://github.com/AKASHAKKI26/Transaction-Data-Analysis
+2026-02-20 10:19:35,780 - GitHubAnalyzer - INFO - Downloading notebook for Balija Akash...
+2026-02-20 10:19:36,720 - GitHubAnalyzer - INFO - Analyzing notebook for Balija Akash...
+2026-02-20 10:19:41,714 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:54,432 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:19:54,434 - GitHubAnalyzer - INFO - Successfully processed Balija Akash
+2026-02-20 10:19:54,435 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Bouroju Akshay', 'github link': 'https://github.com/bourojuakshay/Teck-works-data-analysis'}
+2026-02-20 10:19:54,435 - GitHubAnalyzer - INFO - Extracted - Name: Bouroju Akshay, GitHub URL: https://github.com/bourojuakshay/Teck-works-data-analysis
+2026-02-20 10:19:56,455 - GitHubAnalyzer - INFO - Downloading notebook for Bouroju Akshay...
+2026-02-20 10:19:57,326 - GitHubAnalyzer - INFO - Analyzing notebook for Bouroju Akshay...
+2026-02-20 10:20:02,622 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:15,302 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:15,305 - GitHubAnalyzer - INFO - Successfully processed Bouroju Akshay
+2026-02-20 10:20:15,305 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'P.Keerthan', 'github link': 'https://github.com/keerthan0803/Tekworks_amazon_data_scraping'}
+2026-02-20 10:20:15,306 - GitHubAnalyzer - INFO - Extracted - Name: P.Keerthan, GitHub URL: https://github.com/keerthan0803/Tekworks_amazon_data_scraping
+2026-02-20 10:20:17,298 - GitHubAnalyzer - INFO - Downloading notebook for P.Keerthan...
+2026-02-20 10:20:18,398 - GitHubAnalyzer - INFO - Analyzing notebook for P.Keerthan...
+2026-02-20 10:20:23,102 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:35,737 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:35,741 - GitHubAnalyzer - INFO - Successfully processed P.Keerthan
+2026-02-20 10:20:35,742 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Karne Ruthvik', 'github link': 'https://github.com/RuthvikKarne/TekWorks-Assignments'}
+2026-02-20 10:20:35,743 - GitHubAnalyzer - INFO - Extracted - Name: Karne Ruthvik, GitHub URL: https://github.com/RuthvikKarne/TekWorks-Assignments
+2026-02-20 10:20:38,185 - GitHubAnalyzer - WARNING - No notebook found in TekWorks-Assignments for Karne Ruthvik
+2026-02-20 10:20:38,186 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Bunny Chinthala', 'github link': 'https://github.com/BUNNY98670/tranasction_analysis'}
+2026-02-20 10:20:38,186 - GitHubAnalyzer - INFO - Extracted - Name: Bunny Chinthala, GitHub URL: https://github.com/BUNNY98670/tranasction_analysis
+2026-02-20 10:20:40,463 - GitHubAnalyzer - INFO - Downloading notebook for Bunny Chinthala...
+2026-02-20 10:20:41,368 - GitHubAnalyzer - INFO - Analyzing notebook for Bunny Chinthala...
+2026-02-20 10:20:46,490 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:58,997 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:20:59,001 - GitHubAnalyzer - INFO - Successfully processed Bunny Chinthala
+2026-02-20 10:20:59,002 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'B.Keerthana', 'github link': 'https://github.com/keer-thana25/transaction-data-analysis'}
+2026-02-20 10:20:59,003 - GitHubAnalyzer - INFO - Extracted - Name: B.Keerthana, GitHub URL: https://github.com/keer-thana25/transaction-data-analysis
+2026-02-20 10:21:01,017 - GitHubAnalyzer - INFO - Downloading notebook for B.Keerthana...
+2026-02-20 10:21:01,949 - GitHubAnalyzer - INFO - Analyzing notebook for B.Keerthana...
+2026-02-20 10:21:06,957 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:21:19,667 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:21:19,671 - GitHubAnalyzer - INFO - Successfully processed B.Keerthana
+2026-02-20 10:21:19,672 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Sneha M', 'github link': 'https://github.com/23eg106d12/Transaction-Data-Analysis'}
+2026-02-20 10:21:19,673 - GitHubAnalyzer - INFO - Extracted - Name: Sneha M, GitHub URL: https://github.com/23eg106d12/Transaction-Data-Analysis
+2026-02-20 10:21:21,682 - GitHubAnalyzer - INFO - Downloading notebook for Sneha M...
+2026-02-20 10:21:22,546 - GitHubAnalyzer - INFO - Analyzing notebook for Sneha M...
+2026-02-20 10:21:27,222 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:21:39,853 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:21:39,856 - GitHubAnalyzer - INFO - Successfully processed Sneha M
+2026-02-20 10:21:39,857 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'K.Sindhuja', 'github link': 'https://github.com/Sindhurithu01/transaction_DataAnalysis'}
+2026-02-20 10:21:39,858 - GitHubAnalyzer - INFO - Extracted - Name: K.Sindhuja, GitHub URL: https://github.com/Sindhurithu01/transaction_DataAnalysis
+2026-02-20 10:21:41,853 - GitHubAnalyzer - INFO - Downloading notebook for K.Sindhuja...
+2026-02-20 10:21:42,889 - GitHubAnalyzer - INFO - Analyzing notebook for K.Sindhuja...
+2026-02-20 10:21:47,857 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:00,554 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:00,558 - GitHubAnalyzer - INFO - Successfully processed K.Sindhuja
+2026-02-20 10:22:00,559 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Addagiri Srujana Royal', 'github link': 'https://github.com/srujanaroyal/Transactions-data-analysis'}
+2026-02-20 10:22:00,560 - GitHubAnalyzer - INFO - Extracted - Name: Addagiri Srujana Royal, GitHub URL: https://github.com/srujanaroyal/Transactions-data-analysis
+2026-02-20 10:22:02,545 - GitHubAnalyzer - INFO - Downloading notebook for Addagiri Srujana Royal...
+2026-02-20 10:22:03,445 - GitHubAnalyzer - INFO - Analyzing notebook for Addagiri Srujana Royal...
+2026-02-20 10:22:08,424 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:21,180 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:21,184 - GitHubAnalyzer - INFO - Successfully processed Addagiri Srujana Royal
+2026-02-20 10:22:21,184 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Tanneru Astalakshmi', 'github link': 'https://github.com/asta123456/transaction'}
+2026-02-20 10:22:21,185 - GitHubAnalyzer - INFO - Extracted - Name: Tanneru Astalakshmi, GitHub URL: https://github.com/asta123456/transaction
+2026-02-20 10:22:23,171 - GitHubAnalyzer - INFO - Downloading notebook for Tanneru Astalakshmi...
+2026-02-20 10:22:24,065 - GitHubAnalyzer - INFO - Analyzing notebook for Tanneru Astalakshmi...
+2026-02-20 10:22:29,263 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:41,903 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:22:41,905 - GitHubAnalyzer - INFO - Successfully processed Tanneru Astalakshmi
+2026-02-20 10:22:41,905 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Arnav Misra', 'github link': 'https://github.com/Arnav-hub2/Transaction_Data_Analysis_Notebook-'}
+2026-02-20 10:22:41,906 - GitHubAnalyzer - INFO - Extracted - Name: Arnav Misra, GitHub URL: https://github.com/Arnav-hub2/Transaction_Data_Analysis_Notebook-
+2026-02-20 10:22:43,964 - GitHubAnalyzer - INFO - Downloading notebook for Arnav Misra...
+2026-02-20 10:22:44,873 - GitHubAnalyzer - INFO - Analyzing notebook for Arnav Misra...
+2026-02-20 10:22:49,863 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:02,806 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:02,809 - GitHubAnalyzer - INFO - Successfully processed Arnav Misra
+2026-02-20 10:23:02,810 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Tanvi Ganji', 'github link': 'https://github.com/TanviGanji18/Transaction-dataset-analysis'}
+2026-02-20 10:23:02,811 - GitHubAnalyzer - INFO - Extracted - Name: Tanvi Ganji, GitHub URL: https://github.com/TanviGanji18/Transaction-dataset-analysis
+2026-02-20 10:23:04,808 - GitHubAnalyzer - INFO - Downloading notebook for Tanvi Ganji...
+2026-02-20 10:23:05,728 - GitHubAnalyzer - INFO - Analyzing notebook for Tanvi Ganji...
+2026-02-20 10:23:10,882 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:23,595 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:23,599 - GitHubAnalyzer - INFO - Successfully processed Tanvi Ganji
+2026-02-20 10:23:23,600 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'P. Aditya Vardhan', 'github link': 'https://github.com/Aditya-9522/transactions_dataset_task'}
+2026-02-20 10:23:23,601 - GitHubAnalyzer - INFO - Extracted - Name: P. Aditya Vardhan, GitHub URL: https://github.com/Aditya-9522/transactions_dataset_task
+2026-02-20 10:23:25,561 - GitHubAnalyzer - INFO - Downloading notebook for P. Aditya Vardhan...
+2026-02-20 10:23:26,448 - GitHubAnalyzer - INFO - Analyzing notebook for P. Aditya Vardhan...
+2026-02-20 10:23:31,236 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:43,842 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:23:43,846 - GitHubAnalyzer - INFO - Successfully processed P. Aditya Vardhan
+2026-02-20 10:23:43,847 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'ADAPA MOHAN', 'github link': 'https://github.com/Mohan24th/TEK_WORK'}
+2026-02-20 10:23:43,848 - GitHubAnalyzer - INFO - Extracted - Name: ADAPA MOHAN, GitHub URL: https://github.com/Mohan24th/TEK_WORK
+2026-02-20 10:23:45,947 - GitHubAnalyzer - WARNING - No notebook found in TEK_WORK for ADAPA MOHAN
+2026-02-20 10:23:45,948 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Akshitha Barka', 'github link': 'https://github.com/akshithabarka/Transaction_data_analysis'}
+2026-02-20 10:23:45,949 - GitHubAnalyzer - INFO - Extracted - Name: Akshitha Barka, GitHub URL: https://github.com/akshithabarka/Transaction_data_analysis
+2026-02-20 10:23:48,189 - GitHubAnalyzer - INFO - Downloading notebook for Akshitha Barka...
+2026-02-20 10:23:49,123 - GitHubAnalyzer - INFO - Analyzing notebook for Akshitha Barka...
+2026-02-20 10:23:54,123 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:06,781 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:06,785 - GitHubAnalyzer - INFO - Successfully processed Akshitha Barka
+2026-02-20 10:24:06,787 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'T. Charan Kalyan Govind', 'github link': 'https://github.com/charankalyan9/Transactions_dataanalysis'}
+2026-02-20 10:24:06,787 - GitHubAnalyzer - INFO - Extracted - Name: T. Charan Kalyan Govind, GitHub URL: https://github.com/charankalyan9/Transactions_dataanalysis
+2026-02-20 10:24:08,764 - GitHubAnalyzer - INFO - Downloading notebook for T. Charan Kalyan Govind...
+2026-02-20 10:24:09,659 - GitHubAnalyzer - INFO - Analyzing notebook for T. Charan Kalyan Govind...
+2026-02-20 10:24:14,946 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:27,575 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:27,579 - GitHubAnalyzer - INFO - Successfully processed T. Charan Kalyan Govind
+2026-02-20 10:24:27,580 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Harshith Gadwala', 'github link': 'https://github.com/harshithgadwala225-code/TRANSACTION_DATA_ANALYSIS_OF_STORE-'}
+2026-02-20 10:24:27,581 - GitHubAnalyzer - INFO - Extracted - Name: Harshith Gadwala, GitHub URL: https://github.com/harshithgadwala225-code/TRANSACTION_DATA_ANALYSIS_OF_STORE-
+2026-02-20 10:24:29,561 - GitHubAnalyzer - INFO - Downloading notebook for Harshith Gadwala...
+2026-02-20 10:24:30,493 - GitHubAnalyzer - INFO - Analyzing notebook for Harshith Gadwala...
+2026-02-20 10:24:35,889 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:48,435 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:24:48,440 - GitHubAnalyzer - INFO - Successfully processed Harshith Gadwala
+2026-02-20 10:24:48,442 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Gurram Nimitha Reddy', 'github link': 'https://github.com/nimithareddygurram/Data-Analysis'}
+2026-02-20 10:24:48,446 - GitHubAnalyzer - INFO - Extracted - Name: Gurram Nimitha Reddy, GitHub URL: https://github.com/nimithareddygurram/Data-Analysis
+2026-02-20 10:24:50,457 - GitHubAnalyzer - INFO - Downloading notebook for Gurram Nimitha Reddy...
+2026-02-20 10:24:51,313 - GitHubAnalyzer - INFO - Analyzing notebook for Gurram Nimitha Reddy...
+2026-02-20 10:24:56,418 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:08,988 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:08,992 - GitHubAnalyzer - INFO - Successfully processed Gurram Nimitha Reddy
+2026-02-20 10:25:08,992 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Nikhila Sri', 'github link': 'https://github.com/NIKHILA845/data-anlysis-with-Pandas'}
+2026-02-20 10:25:08,993 - GitHubAnalyzer - INFO - Extracted - Name: Nikhila Sri, GitHub URL: https://github.com/NIKHILA845/data-anlysis-with-Pandas
+2026-02-20 10:25:10,968 - GitHubAnalyzer - INFO - Downloading notebook for Nikhila Sri...
+2026-02-20 10:25:11,986 - GitHubAnalyzer - INFO - Analyzing notebook for Nikhila Sri...
+2026-02-20 10:25:16,929 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:29,690 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:29,693 - GitHubAnalyzer - INFO - Successfully processed Nikhila Sri
+2026-02-20 10:25:29,694 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Krishna Anand Chauhan', 'github link': 'https://github.com/krishnaanand07/Transaction-dataset-analysis'}
+2026-02-20 10:25:29,694 - GitHubAnalyzer - INFO - Extracted - Name: Krishna Anand Chauhan, GitHub URL: https://github.com/krishnaanand07/Transaction-dataset-analysis
+2026-02-20 10:25:31,678 - GitHubAnalyzer - INFO - Downloading notebook for Krishna Anand Chauhan...
+2026-02-20 10:25:32,592 - GitHubAnalyzer - INFO - Analyzing notebook for Krishna Anand Chauhan...
+2026-02-20 10:25:37,624 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:50,376 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:25:50,380 - GitHubAnalyzer - INFO - Successfully processed Krishna Anand Chauhan
+2026-02-20 10:25:50,381 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'G NANDHISHWAR REDDY', 'github link': 'https://github.com/Nandhu55/Transaction-Data-Analysis.git'}
+2026-02-20 10:25:50,382 - GitHubAnalyzer - INFO - Extracted - Name: G NANDHISHWAR REDDY, GitHub URL: https://github.com/Nandhu55/Transaction-Data-Analysis.git
+2026-02-20 10:25:51,245 - GitHubAnalyzer - WARNING - No repositories found for G NANDHISHWAR REDDY
+2026-02-20 10:25:51,246 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Vutukuri Sree charan', 'github link': 'https://github.com/Sreecharan-03/TekWorks_Pandas_Assignment'}
+2026-02-20 10:25:51,246 - GitHubAnalyzer - INFO - Extracted - Name: Vutukuri Sree charan, GitHub URL: https://github.com/Sreecharan-03/TekWorks_Pandas_Assignment
+2026-02-20 10:25:53,507 - GitHubAnalyzer - INFO - Downloading notebook for Vutukuri Sree charan...
+2026-02-20 10:25:54,465 - GitHubAnalyzer - INFO - Analyzing notebook for Vutukuri Sree charan...
+2026-02-20 10:25:59,539 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:26:12,127 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:26:12,133 - GitHubAnalyzer - INFO - Successfully processed Vutukuri Sree charan
+2026-02-20 10:26:12,134 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Gundamoni Ganga', 'github link': 'https://github.com/gundamoniganga14/task1-TransactionData'}
+2026-02-20 10:26:12,135 - GitHubAnalyzer - INFO - Extracted - Name: Gundamoni Ganga, GitHub URL: https://github.com/gundamoniganga14/task1-TransactionData
+2026-02-20 10:26:14,139 - GitHubAnalyzer - WARNING - No notebook found in task1-TransactionData for Gundamoni Ganga
+2026-02-20 10:26:14,141 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'kothapeta kruthika', 'github link': 'https://github.com/kruthika2005-ul/task_3'}
+2026-02-20 10:26:14,142 - GitHubAnalyzer - INFO - Extracted - Name: kothapeta kruthika, GitHub URL: https://github.com/kruthika2005-ul/task_3
+2026-02-20 10:26:16,411 - GitHubAnalyzer - WARNING - No notebook found in task_3 for kothapeta kruthika
+2026-02-20 10:26:16,412 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'N Sai Pranathi', 'github link': 'https://github.com/nsaipranathi/turbo-dataset_pandas'}
+2026-02-20 10:26:16,413 - GitHubAnalyzer - INFO - Extracted - Name: N Sai Pranathi, GitHub URL: https://github.com/nsaipranathi/turbo-dataset_pandas
+2026-02-20 10:26:18,673 - GitHubAnalyzer - WARNING - No notebook found in turbo-dataset_pandas for N Sai Pranathi
+2026-02-20 10:26:18,674 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Gagandeep Kaur', 'github link': 'https://github.com/gagandeep-kaur-05/transaction-data-analysis'}
+2026-02-20 10:26:18,675 - GitHubAnalyzer - INFO - Extracted - Name: Gagandeep Kaur, GitHub URL: https://github.com/gagandeep-kaur-05/transaction-data-analysis
+2026-02-20 10:26:20,905 - GitHubAnalyzer - INFO - Downloading notebook for Gagandeep Kaur...
+2026-02-20 10:26:21,889 - GitHubAnalyzer - INFO - Analyzing notebook for Gagandeep Kaur...
+2026-02-20 10:26:27,245 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:26:39,895 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:26:39,898 - GitHubAnalyzer - INFO - Successfully processed Gagandeep Kaur
+2026-02-20 10:26:39,899 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'G Laxman', 'github link': 'https://github.com/laxman7271/Transaction-Data-Analysis'}
+2026-02-20 10:26:39,900 - GitHubAnalyzer - INFO - Extracted - Name: G Laxman, GitHub URL: https://github.com/laxman7271/Transaction-Data-Analysis
+2026-02-20 10:26:41,906 - GitHubAnalyzer - INFO - Downloading notebook for G Laxman...
+2026-02-20 10:26:42,820 - GitHubAnalyzer - INFO - Analyzing notebook for G Laxman...
+2026-02-20 10:26:47,962 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:00,528 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:00,529 - GitHubAnalyzer - INFO - Successfully processed G Laxman
+2026-02-20 10:27:00,530 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Palla Hasini Reddy', 'github link': 'https://github.com/Hasini848/transaction-sales-analysis'}
+2026-02-20 10:27:00,530 - GitHubAnalyzer - INFO - Extracted - Name: Palla Hasini Reddy, GitHub URL: https://github.com/Hasini848/transaction-sales-analysis
+2026-02-20 10:27:02,656 - GitHubAnalyzer - INFO - Downloading notebook for Palla Hasini Reddy...
+2026-02-20 10:27:03,733 - GitHubAnalyzer - INFO - Analyzing notebook for Palla Hasini Reddy...
+2026-02-20 10:27:08,943 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:21,575 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:21,578 - GitHubAnalyzer - INFO - Successfully processed Palla Hasini Reddy
+2026-02-20 10:27:21,579 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Chandana Abbidi', 'github link': 'https://github.com/chandanaabbidi63/transcations'}
+2026-02-20 10:27:21,580 - GitHubAnalyzer - INFO - Extracted - Name: Chandana Abbidi, GitHub URL: https://github.com/chandanaabbidi63/transcations
+2026-02-20 10:27:23,609 - GitHubAnalyzer - INFO - Downloading notebook for Chandana Abbidi...
+2026-02-20 10:27:24,630 - GitHubAnalyzer - INFO - Analyzing notebook for Chandana Abbidi...
+2026-02-20 10:27:29,825 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:42,359 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:27:42,361 - GitHubAnalyzer - INFO - Successfully processed Chandana Abbidi
+2026-02-20 10:27:42,362 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Yelligaddala sanjana', 'github link': 'https://github.com/Sanjana-15ai/teakworks'}
+2026-02-20 10:27:42,362 - GitHubAnalyzer - INFO - Extracted - Name: Yelligaddala sanjana, GitHub URL: https://github.com/Sanjana-15ai/teakworks
+2026-02-20 10:27:44,363 - GitHubAnalyzer - INFO - Downloading notebook for Yelligaddala sanjana...
+2026-02-20 10:27:45,281 - GitHubAnalyzer - INFO - Analyzing notebook for Yelligaddala sanjana...
+2026-02-20 10:27:50,339 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:03,192 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:03,202 - GitHubAnalyzer - INFO - Successfully processed Yelligaddala sanjana
+2026-02-20 10:28:03,202 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Subham Singh Negi', 'github link': 'https://github.com/subxm/TekWorks'}
+2026-02-20 10:28:03,203 - GitHubAnalyzer - INFO - Extracted - Name: Subham Singh Negi, GitHub URL: https://github.com/subxm/TekWorks
+2026-02-20 10:28:05,206 - GitHubAnalyzer - WARNING - No notebook found in TekWorks for Subham Singh Negi
+2026-02-20 10:28:05,213 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Kasireddy Rohan Reddy', 'github link': 'https://github.com/Rohan-kasireddy/transcation_task'}
+2026-02-20 10:28:05,214 - GitHubAnalyzer - INFO - Extracted - Name: Kasireddy Rohan Reddy, GitHub URL: https://github.com/Rohan-kasireddy/transcation_task
+2026-02-20 10:28:07,465 - GitHubAnalyzer - INFO - Downloading notebook for Kasireddy Rohan Reddy...
+2026-02-20 10:28:08,533 - GitHubAnalyzer - INFO - Analyzing notebook for Kasireddy Rohan Reddy...
+2026-02-20 10:28:13,422 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:26,168 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:26,171 - GitHubAnalyzer - INFO - Successfully processed Kasireddy Rohan Reddy
+2026-02-20 10:28:26,171 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'K SAI KOUSHIK', 'github link': 'https://github.com/Saikoushik14/12thfeb_task_tekworks_training_Transactions'}
+2026-02-20 10:28:26,172 - GitHubAnalyzer - INFO - Extracted - Name: K SAI KOUSHIK, GitHub URL: https://github.com/Saikoushik14/12thfeb_task_tekworks_training_Transactions
+2026-02-20 10:28:28,190 - GitHubAnalyzer - WARNING - No notebook found in 12thfeb_task_tekworks_training_Transactions for K SAI KOUSHIK
+2026-02-20 10:28:28,191 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Katkam Shainu Reddy', 'github link': 'https://github.com/shines5716/Transactions_tekworks_task'}
+2026-02-20 10:28:28,191 - GitHubAnalyzer - INFO - Extracted - Name: Katkam Shainu Reddy, GitHub URL: https://github.com/shines5716/Transactions_tekworks_task
+2026-02-20 10:28:30,462 - GitHubAnalyzer - WARNING - No notebook found in Transactions_tekworks_task for Katkam Shainu Reddy
+2026-02-20 10:28:30,463 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'G Nikitha', 'github link': 'https://github.com/Nikitha0320/tekworks-transaction-DataAnalysis'}
+2026-02-20 10:28:30,464 - GitHubAnalyzer - INFO - Extracted - Name: G Nikitha, GitHub URL: https://github.com/Nikitha0320/tekworks-transaction-DataAnalysis
+2026-02-20 10:28:32,692 - GitHubAnalyzer - INFO - Downloading notebook for G Nikitha...
+2026-02-20 10:28:33,687 - GitHubAnalyzer - INFO - Analyzing notebook for G Nikitha...
+2026-02-20 10:28:38,723 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:51,256 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:28:51,258 - GitHubAnalyzer - INFO - Successfully processed G Nikitha
+2026-02-20 10:28:51,259 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'koppurapu siddartha reddy', 'github link': 'https://github.com/Koppurapu/Tekworkd8'}
+2026-02-20 10:28:51,259 - GitHubAnalyzer - INFO - Extracted - Name: koppurapu siddartha reddy, GitHub URL: https://github.com/Koppurapu/Tekworkd8
+2026-02-20 10:28:53,418 - GitHubAnalyzer - INFO - Downloading notebook for koppurapu siddartha reddy...
+2026-02-20 10:28:54,454 - GitHubAnalyzer - INFO - Analyzing notebook for koppurapu siddartha reddy...
+2026-02-20 10:28:59,417 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:12,095 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:12,097 - GitHubAnalyzer - INFO - Successfully processed koppurapu siddartha reddy
+2026-02-20 10:29:12,098 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'vavilala vedasree', 'github link': 'https://github.com/vedasree-au/pandas_practice3'}
+2026-02-20 10:29:12,098 - GitHubAnalyzer - INFO - Extracted - Name: vavilala vedasree, GitHub URL: https://github.com/vedasree-au/pandas_practice3
+2026-02-20 10:29:14,110 - GitHubAnalyzer - INFO - Downloading notebook for vavilala vedasree...
+2026-02-20 10:29:15,067 - GitHubAnalyzer - INFO - Analyzing notebook for vavilala vedasree...
+2026-02-20 10:29:20,094 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:32,669 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:32,673 - GitHubAnalyzer - INFO - Successfully processed vavilala vedasree
+2026-02-20 10:29:32,674 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Chinthakuntla Harshini', 'github link': 'https://github.com/harshinichinta/Harshini-Ch'}
+2026-02-20 10:29:32,675 - GitHubAnalyzer - INFO - Extracted - Name: Chinthakuntla Harshini, GitHub URL: https://github.com/harshinichinta/Harshini-Ch
+2026-02-20 10:29:34,711 - GitHubAnalyzer - INFO - Downloading notebook for Chinthakuntla Harshini...
+2026-02-20 10:29:36,010 - GitHubAnalyzer - INFO - Analyzing notebook for Chinthakuntla Harshini...
+2026-02-20 10:29:40,945 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:53,597 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:29:53,600 - GitHubAnalyzer - INFO - Successfully processed Chinthakuntla Harshini
+2026-02-20 10:29:53,601 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'SATHWIKA SAMUDRALA', 'github link': 'https://github.com/sathwika9121/Pandas-Data-Analysis'}
+2026-02-20 10:29:53,601 - GitHubAnalyzer - INFO - Extracted - Name: SATHWIKA SAMUDRALA, GitHub URL: https://github.com/sathwika9121/Pandas-Data-Analysis
+2026-02-20 10:29:55,570 - GitHubAnalyzer - INFO - Downloading notebook for SATHWIKA SAMUDRALA...
+2026-02-20 10:29:56,472 - GitHubAnalyzer - INFO - Analyzing notebook for SATHWIKA SAMUDRALA...
+2026-02-20 10:30:01,593 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:14,193 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:14,195 - GitHubAnalyzer - INFO - Successfully processed SATHWIKA SAMUDRALA
+2026-02-20 10:30:14,195 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Ch.Harshini', 'github link': 'https://github.com/harshinichinta/Harshini-Ch'}
+2026-02-20 10:30:14,196 - GitHubAnalyzer - INFO - Extracted - Name: Ch.Harshini, GitHub URL: https://github.com/harshinichinta/Harshini-Ch
+2026-02-20 10:30:16,202 - GitHubAnalyzer - INFO - Downloading notebook for Ch.Harshini...
+2026-02-20 10:30:17,052 - GitHubAnalyzer - INFO - Analyzing notebook for Ch.Harshini...
+2026-02-20 10:30:21,876 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:34,456 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:34,459 - GitHubAnalyzer - INFO - Successfully processed Ch.Harshini
+2026-02-20 10:30:34,459 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Kandakatla Nithisha', 'github link': 'https://github.com/Nithishakanadakatla/Tekworks'}
+2026-02-20 10:30:34,460 - GitHubAnalyzer - INFO - Extracted - Name: Kandakatla Nithisha, GitHub URL: https://github.com/Nithishakanadakatla/Tekworks
+2026-02-20 10:30:36,462 - GitHubAnalyzer - INFO - Downloading notebook for Kandakatla Nithisha...
+2026-02-20 10:30:37,400 - GitHubAnalyzer - INFO - Analyzing notebook for Kandakatla Nithisha...
+2026-02-20 10:30:42,304 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:55,002 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:30:55,005 - GitHubAnalyzer - INFO - Successfully processed Kandakatla Nithisha
+2026-02-20 10:30:55,006 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'pavani pavuluri', 'github link': 'https://github.com/pavanipavulurii/Transaction-dataset-analysis'}
+2026-02-20 10:30:55,007 - GitHubAnalyzer - INFO - Extracted - Name: pavani pavuluri, GitHub URL: https://github.com/pavanipavulurii/Transaction-dataset-analysis
+2026-02-20 10:30:57,030 - GitHubAnalyzer - INFO - Downloading notebook for pavani pavuluri...
+2026-02-20 10:30:57,975 - GitHubAnalyzer - INFO - Analyzing notebook for pavani pavuluri...
+2026-02-20 10:31:03,134 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:15,729 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:15,734 - GitHubAnalyzer - INFO - Successfully processed pavani pavuluri
+2026-02-20 10:31:15,735 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'k.pravalika', 'github link': 'https://github.com/23eg110b27-code/task1.ipynb'}
+2026-02-20 10:31:15,738 - GitHubAnalyzer - INFO - Extracted - Name: k.pravalika, GitHub URL: https://github.com/23eg110b27-code/task1.ipynb
+2026-02-20 10:31:17,746 - GitHubAnalyzer - INFO - Downloading notebook for k.pravalika...
+2026-02-20 10:31:18,722 - GitHubAnalyzer - INFO - Analyzing notebook for k.pravalika...
+2026-02-20 10:31:23,537 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:36,147 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:36,149 - GitHubAnalyzer - INFO - Successfully processed k.pravalika
+2026-02-20 10:31:36,149 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'PASHAM MANASA DEVI', 'github link': 'https://github.com/pashammanasadevi/Transcations'}
+2026-02-20 10:31:36,150 - GitHubAnalyzer - INFO - Extracted - Name: PASHAM MANASA DEVI, GitHub URL: https://github.com/pashammanasadevi/Transcations
+2026-02-20 10:31:38,156 - GitHubAnalyzer - INFO - Downloading notebook for PASHAM MANASA DEVI...
+2026-02-20 10:31:39,101 - GitHubAnalyzer - INFO - Analyzing notebook for PASHAM MANASA DEVI...
+2026-02-20 10:31:44,267 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:56,792 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:31:56,793 - GitHubAnalyzer - INFO - Successfully processed PASHAM MANASA DEVI
+2026-02-20 10:31:56,794 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Peddi Sahasra', 'github link': 'https://github.com/Psahasra1124/pandas_tekwork'}
+2026-02-20 10:31:56,794 - GitHubAnalyzer - INFO - Extracted - Name: Peddi Sahasra, GitHub URL: https://github.com/Psahasra1124/pandas_tekwork
+2026-02-20 10:31:58,761 - GitHubAnalyzer - INFO - Downloading notebook for Peddi Sahasra...
+2026-02-20 10:31:59,727 - GitHubAnalyzer - INFO - Analyzing notebook for Peddi Sahasra...
+2026-02-20 10:32:04,788 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:17,621 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:17,626 - GitHubAnalyzer - INFO - Successfully processed Peddi Sahasra
+2026-02-20 10:32:17,627 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Sridvika', 'github link': 'https://github.com/sridvikapapishetty/transactionAnalysis'}
+2026-02-20 10:32:17,627 - GitHubAnalyzer - INFO - Extracted - Name: Sridvika, GitHub URL: https://github.com/sridvikapapishetty/transactionAnalysis
+2026-02-20 10:32:19,637 - GitHubAnalyzer - INFO - Downloading notebook for Sridvika...
+2026-02-20 10:32:20,546 - GitHubAnalyzer - INFO - Analyzing notebook for Sridvika...
+2026-02-20 10:32:25,440 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:38,246 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:38,248 - GitHubAnalyzer - INFO - Successfully processed Sridvika
+2026-02-20 10:32:38,248 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Vemula Anitha', 'github link': 'https://github.com/ANITHA671/amazon-laptop-project'}
+2026-02-20 10:32:38,248 - GitHubAnalyzer - INFO - Extracted - Name: Vemula Anitha, GitHub URL: https://github.com/ANITHA671/amazon-laptop-project
+2026-02-20 10:32:40,264 - GitHubAnalyzer - INFO - Downloading notebook for Vemula Anitha...
+2026-02-20 10:32:41,348 - GitHubAnalyzer - INFO - Analyzing notebook for Vemula Anitha...
+2026-02-20 10:32:46,262 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:58,871 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:32:58,876 - GitHubAnalyzer - INFO - Successfully processed Vemula Anitha
+2026-02-20 10:32:58,877 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Meka Arun Venkata Krishna', 'github link': 'https://github.com/arunmeka29/TekworksTask-03-Transaction-Data-Analysis-'}
+2026-02-20 10:32:58,878 - GitHubAnalyzer - INFO - Extracted - Name: Meka Arun Venkata Krishna, GitHub URL: https://github.com/arunmeka29/TekworksTask-03-Transaction-Data-Analysis-
+2026-02-20 10:33:00,835 - GitHubAnalyzer - INFO - Downloading notebook for Meka Arun Venkata Krishna...
+2026-02-20 10:33:01,696 - GitHubAnalyzer - INFO - Analyzing notebook for Meka Arun Venkata Krishna...
+2026-02-20 10:33:06,831 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:33:19,587 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-20 10:33:19,591 - GitHubAnalyzer - INFO - Successfully processed Meka Arun Venkata Krishna
+2026-02-20 10:33:19,591 - GitHubAnalyzer - INFO - Processing student data: {'name of the student': 'Muda Rohit', 'github link': 'https://github.com/Rohit-Muda/TekWorks'}
+2026-02-20 10:33:19,592 - GitHubAnalyzer - INFO - Extracted - Name: Muda Rohit, GitHub URL: https://github.com/Rohit-Muda/TekWorks
+2026-02-20 10:33:21,707 - GitHubAnalyzer - WARNING - No notebook found in TekWorks for Muda Rohit
+2026-02-20 10:33:21,751 - GitHubAnalyzer - INFO - Successfully wrote results to C:\Users\DELL\Desktop\github\github_analyzer\outputs\evaluation_20260220_103321.xlsx
+2026-02-20 10:33:21,753 - GitHubAnalyzer - INFO - Task aa15afdf-d35f-4b2b-a152-a17685f0b66d completed successfully.
