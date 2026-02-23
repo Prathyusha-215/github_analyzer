@@ -71,7 +71,7 @@ class GitHubConnector:
         Returns the file content object or None.
         """
         
-        def search_contents(path="", depth=0, max_depth=2):
+        def search_contents(path="", depth=0, max_depth=3):
             """Recursive search with depth limit"""
             if depth > max_depth:
                 return None
@@ -83,11 +83,10 @@ class GitHubConnector:
                     if item.type == "file" and item.name.endswith(".ipynb"):
                         return item
                     elif item.type == "dir" and depth < max_depth:
-                        # Search in common directories first
-                        if item.name in ["", "notebooks", "src", "code", "project"]:
-                            result = search_contents(item.path, depth + 1, max_depth)
-                            if result:
-                                return result
+                        # Search in all directories up to max_depth
+                        result = search_contents(item.path, depth + 1, max_depth)
+                        if result:
+                            return result
                 return None
             except Exception as e:
                 logger.error(f"Error searching {path} in {repo.name}: {e}")

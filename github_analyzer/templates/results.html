@@ -183,9 +183,7 @@
                                         <th><i class="fab fa-github me-1"></i> GitHub Link</th>
                                         <th><i class="fas fa-folder-open me-1"></i> Repo Found</th>
                                         <th><i class="fas fa-file-alt me-1"></i> Notebook Found</th>
-                                        <th><i class="fas fa-plus-circle me-1"></i> Positives</th>
-                                        <th><i class="fas fa-minus-circle me-1"></i> Negatives</th>
-                                        <th><i class="fas fa-lightbulb me-1"></i> Improvements</th>
+                                        <th><i class="fas fa-comment-dots me-1"></i> Mentor Comments</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -219,63 +217,22 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            {% if result.positives %}
-                                            {% if result.positives|length > 100 %}
+                                            {% if result.mentor_comments %}
+                                            {% if result.mentor_comments|length > 150 %}
                                             <div>
                                                 <span class="text-short"
                                                     style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.positives[:100] }}...</span>
+                                                    result.mentor_comments[:150] }}...</span>
                                                 <span class="text-full"
                                                     style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.positives }}</span>
-                                                <br>
-                                                <a class="read-more-link" onclick="toggleText(this)">Read More</a>
-                                            </div>
-                                            {% else %}
-                                            <div style="white-space: pre-wrap; font-size: 0.875rem;">{{ result.positives
-                                                }}</div>
-                                            {% endif %}
-                                            {% else %}
-                                            <span class="text-muted">None</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if result.negatives %}
-                                            {% if result.negatives|length > 100 %}
-                                            <div>
-                                                <span class="text-short"
-                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.negatives[:100] }}...</span>
-                                                <span class="text-full"
-                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.negatives }}</span>
-                                                <br>
-                                                <a class="read-more-link" onclick="toggleText(this)">Read More</a>
-                                            </div>
-                                            {% else %}
-                                            <div style="white-space: pre-wrap; font-size: 0.875rem;">{{ result.negatives
-                                                }}</div>
-                                            {% endif %}
-                                            {% else %}
-                                            <span class="text-muted">None</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if result.improvements %}
-                                            {% if result.improvements|length > 100 %}
-                                            <div>
-                                                <span class="text-short"
-                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.improvements[:100] }}...</span>
-                                                <span class="text-full"
-                                                    style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                    result.improvements }}</span>
+                                                    result.mentor_comments }}</span>
                                                 <br>
                                                 <a class="read-more-link" onclick="toggleText(this)">Read More</a>
                                             </div>
                                             {% else %}
                                             <div style="white-space: pre-wrap; font-size: 0.875rem;">{{
-                                                result.improvements }}</div>
+                                                result.mentor_comments
+                                                }}</div>
                                             {% endif %}
                                             {% else %}
                                             <span class="text-muted">None</span>

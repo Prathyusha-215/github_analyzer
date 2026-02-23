@@ -2,7 +2,7 @@ from src.components.github_connector import GitHubConnector
 from src.components.notebook_processor import NotebookProcessor
 from src.components.llm_engine import LLMEngine
 from src.components.report_generator import ReportGenerator
-from src.utils.common import extract_user_and_repo
+from src.utils.common import extract_user_and_repo, clean_github_url
 from src.constants import Config
 from src.logger.logging_config import setup_logging
 
@@ -35,11 +35,12 @@ class AnalysisPipeline:
             "notebook_found": "No",
             "notebook_type": "",
             "overall_rating": "",
-            "positives": "",
-            "negatives": "",
-            "improvements": "",
+            "mentor_comments": "",
             "status": "Failed"
         }
+        
+        github_url = clean_github_url(github_url)
+        result["github_link"] = github_url
         
         try:
             username, repo_name = extract_user_and_repo(github_url)

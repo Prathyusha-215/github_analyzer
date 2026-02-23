@@ -12,15 +12,13 @@ class ReportGenerator:
         sections = {
             "notebook_type": "",
             "overall_rating": "",
-            "positives": "",
-            "negatives": "",
-            "improvements": ""
+            "mentor_comments": ""
         }
         
         current_section = None
         
         # Updated regex to handle purely capitalized headers, Markdown headers (### HEADER), and Bold headers (**HEADER**)
-        header_pattern = re.compile(r"^[\#\*]*\s*(NOTEBOOK TYPE|OVERALL RATING|POSITIVES|NEGATIVES|IMPROVEMENTS)[\s\:\*]*", re.IGNORECASE)
+        header_pattern = re.compile(r"^[\#\*]*\s*(NOTEBOOK TYPE|OVERALL RATING|MENTOR COMMENTS)[\s\:\*]*", re.IGNORECASE)
         
         lines = response_text.split('\n')
         for line in lines:
@@ -31,12 +29,8 @@ class ReportGenerator:
                 raw_section = match.group(1)
                 current_section = raw_section.strip().title()
                 # Normalizing keys to match dictionary keys
-                if current_section.upper() == "POSITIVES":
-                    current_section = "positives"
-                elif current_section.upper() == "NEGATIVES":
-                    current_section = "negatives"
-                elif current_section.upper() == "IMPROVEMENTS":
-                    current_section = "improvements"
+                if current_section.upper() == "MENTOR COMMENTS":
+                    current_section = "mentor_comments"
                 elif current_section.upper() == "NOTEBOOK TYPE":
                     current_section = "notebook_type"
                 elif current_section.upper() == "OVERALL RATING":
@@ -71,9 +65,7 @@ class ReportGenerator:
                 "github_link": "GitHub Link",
                 "repo_found": "Repo Found",
                 "notebook_found": "Notebook Found",
-                "positives": "Positives",
-                "negatives": "Negatives",
-                "improvements": "Improvements"
+                "mentor_comments": "Mentor Comments"
             }
             
             # Convert list of dicts to DataFrame

@@ -27,6 +27,7 @@ def clean_github_url(url: str) -> str:
     url = url.rstrip('/')
     url = re.sub(r'/tree/.*$', '', url)  # Remove branch/tree paths
     url = re.sub(r'/blob/.*$', '', url)  # Remove file paths
+    url = re.sub(r'\.git$', '', url, flags=re.IGNORECASE)    # Remove .git suffix
 
     return url
 
@@ -70,7 +71,11 @@ def extract_user_and_repo(github_url):
     if len(parts) == 1:
         return (parts[0], None)
     elif len(parts) >= 2:
-        return (parts[0], parts[1])
+        username = parts[0]
+        repo_name = parts[1]
+        # Remove .git if present in the repo name part
+        repo_name = re.sub(r'\.git$', '', repo_name, flags=re.IGNORECASE)
+        return (username, repo_name)
     return (None, None)
 
 def extract_username(github_url):

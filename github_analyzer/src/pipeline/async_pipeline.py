@@ -84,9 +84,7 @@ class AsyncAnalysisPipeline:
                     results.append({
                         "student_name": student.get("name of the student", "Unknown"),
                         "status": "Failed",
-                        "positives": str(e),
-                        "negatives": "",
-                        "improvements": "",
+                        "mentor_comments": str(e),
                         "repo_found": "No",
                         "notebook_found": "No"
                     })
