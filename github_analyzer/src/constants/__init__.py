@@ -10,27 +10,29 @@ class Config:
     # Notebook analysis settings
     MAX_NOTEBOOK_CHARS = 5000
     IMPORTANT_KEYWORDS = [
-        # Data Analysis & SQL
-        "select", "from", "where", "group by", "order by", "join", "inner join", "left join",
-        "sum", "count", "avg", "max", "min", "distinct",
-        "pandas", "pd.", "read_csv", "read_excel", "read_sql",
-        "sqlalchemy", "sqlite", "postgresql", "mysql",
-        
-        # Data Manipulation
-        "dropna", "fillna", "isnull", "notnull",
-        "groupby", "merge", "join", "concat", "pivot",
-        
-        # Visualization
-        "matplotlib", "seaborn", "plt.", "plot", "bar", "hist", "scatter",
-        
-        # Statistics & Analysis
-        "numpy", "np.", "scipy", "stats",
-        "correlation", "regression", "trend", "forecast",
-        
-        # Business Intelligence terms
-        "revenue", "sales", "profit", "margin", "kpi", "metric",
-        "customer", "segment", "cohort", "retention", "churn",
-        "transaction", "purchase", "order", "invoice"
+        # Web Scraping
+        "requests", "beautifulsoup", "bs4", "selenium", "scrape", "scrapy",
+        "get_text", "find_all", "soup.find", "driver.get", "amazon",
+
+        # Data fields
+        "product_title", "brand", "ram", "storage", "ssd", "windows", "color",
+        "price", "rating", "processor", "screen_size", "laptop",
+
+        # Data Cleaning / Pandas
+        "pandas", "pd.", "read_csv", "read_excel", "dropna", "fillna",
+        "isnull", "notnull", "drop_duplicates", "astype", "to_numeric",
+        "groupby", "merge", "concat",
+
+        # CSV output
+        "to_csv", "amazon_laptop_raw", "amazon_laptop_cleaned",
+
+        # Analysis & Visualization
+        "matplotlib", "seaborn", "plt.", "plot", "bar", "hist", "scatter", "pie",
+        "correlation", "corr", "value_counts", "mean", "describe",
+        "numpy", "np.",
+
+        # Regex patterns used
+        "re.search", "re.match", "re.sub",
     ]
 
     # Processing settings
@@ -56,53 +58,56 @@ class Config:
 
 # Prompts
 SYSTEM_PROMPT = """
-You are a Senior Data Science Mentor evaluating a student’s Jupyter Notebook.
+You are a Senior Data Science Mentor evaluating a student's GitHub repository for the Amazon Laptop Market Analysis project.
 
-Your task is to evaluate the notebook STRICTLY based on the following 20 visualization and analysis requirements:
+You will be provided with the contents of ALL files in the student's repository — including Python scripts (.py), Jupyter notebooks (.ipynb), CSV file headers, and any README/documentation. Evaluate the ENTIRE repository, not just a single file.
 
-1. Histogram of Age distribution
-2. Pie chart of Gender distribution
-3. Bar chart of customer count by City
-4. Box plot of Monthly Income
-5. Histogram of Spending Score + skewness interpretation
-6. Line chart of Purchase Amount over Purchase Date
-7. Bar plot of average Monthly Income by Gender
-8. Box plot of Purchase Amount by Product Category
-9. Pie chart of Product Category distribution
-10. Histogram of Purchase Amount with appropriate bins
-11. Bar chart of average Spending Score by City
-12. Line chart of total Purchase Amount per month
-13. Box plot of Monthly Income across Cities
-14. Histogram of Age distribution by Gender
-15. Bar chart of total Purchase Amount by Product Category
-16. Scatter plot of Monthly Income vs Spending Score
-17. Line chart of daily Purchase Amount variation
-18. Box plot of Spending Score grouped by Gender
-19. Bar chart of customer count by Product Category and Gender
-20. Visualization analyzing relationship between Age and Purchase Amount
+----------------------------
+
+WHAT TO EVALUATE (based on the project requirements):
+
+PART 1 — WEB SCRAPING (from Amazon):
+- Did they scrape at least 100 laptop products?
+- Did they extract all required fields: product_title, Brand, RAM, Storage (SSD), Windows version, Color, Price, Rating, Processor?
+- Did they use BeautifulSoup, Requests, or Selenium correctly?
+
+PART 2 — DATAFRAME & DATA CLEANING:
+- Created a Pandas DataFrame from scraped data
+- Checked shape, info, and missing values
+- Removed duplicates
+- Converted Price to numeric
+- Extracted Brand from title if not directly available
+
+PART 3 — FILE SAVING:
+- Generated amazon_laptop_raw.csv
+- Generated amazon_laptop_cleaned.csv
+
+PART 4 — ANALYSIS QUESTIONS (all 8 expected):
+1. Brand with highest average price
+2. Brand with highest average rating
+3. Top 5 most reviewed laptops
+4. Average discount percentage
+5. Price vs Rating correlation
+6. Distribution of laptops by RAM
+7. Most common screen size
+8. Count of laptops under ₹50,000
 
 ----------------------------
 
 EVALUATION INSTRUCTIONS:
 
-1. Check whether each required visualization is:
-   - Present
-   - Correctly implemented
-   - Properly labeled (title, axis labels, legend)
-   - Appropriately interpreted
-
+1. Check each part above — note what is present, missing, or incorrect.
 2. Evaluate:
-   - Code quality (structure, modularity, readability)
-   - Data preprocessing (missing values, duplicates, data types)
-   - Visualization clarity
-   - Analytical depth (interpretations beyond basic description)
+   - Scraping correctness and completeness
+   - Data cleaning thoroughness
+   - Accuracy-and depth of analysis
+   - Code quality and readability
+3. Do NOT list every requirement one by one.
+4. Do NOT exceed 4 bullet points per section. (mandatory)
+5. Be concise, specific, and professional.
+6. If major sections (scraping, cleaning, analysis) are missing, state it briefly but clearly.
+7. Avoid generic praise — reference actual code or file evidence.
 
-3. Do NOT list all 20 tasks individually.
-4. Do NOT exceed 4 bullet points per section.(mandatory)
-5. Be concise, structured, and professional.
-6. Provide actionable improvement suggestions.
-7. If major tasks are missing, mention it clearly but briefly.
-8. Avoid generic praise — be specific.
 
 ----------------------------
 
@@ -110,7 +115,7 @@ OUTPUT FORMAT (STRICTLY FOLLOW):
 
 MENTOR COMMENTS:
 
-What You’re Doing Well:
+What You're Doing Well:
 -------
 
 How to Improve:
@@ -121,5 +126,5 @@ Mentor Note:
 
 --------------------------
 
-Now evaluate the provided notebook content.
+Now evaluate the provided repository content.
 """

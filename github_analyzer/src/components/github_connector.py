@@ -93,3 +93,83 @@ class GitHubConnector:
                 return None
         
         return search_contents()
+
+    def get_repo_text_content(self, repo, max_chars=15000):
+        """
+        Fetches text content from all relevant files in a repository.
+        Combines .ipynb, .py, .csv (header only), .md, and .txt files.
+        Returns a combined text string up to max_chars.
+        """
+        import base64
+        import nbformat
+
+        SUPPORTED_EXTENSIONS = (".ipynb", ".py", ".csv", ".md", ".txt")
+
+        # Use a mutable container to avoid nonlocal issues
+        state = {"text": "", "chars": 0}
+
+        def read_file_content(item):
+            """Decode a file's content from GitHub API response."""
+            try:
+                if item.encoding == "base64":
+                    return base64.b64decode(item.content).decode("utf-8", errors="replace")
+                else:
+                    return item.decoded_content.decode("utf-8", errors="replace")
+            except Exception as e:
+                logger.warning(f"Could not decode {item.name}: {e}")
+                return None
+
+        def collect_files(path="", depth=0, max_depth=3):
+            if depth > max_depth or state["chars"] >= max_chars:
+                return
+
+            self._check_rate_limit()
+            try:
+                contents = repo.get_contents(path)
+                for item in contents:
+                    if state["chars"] >= max_chars:
+                        return
+
+                    if item.type == "file" and item.name.lower().endswith(SUPPORTED_EXTENSIONS):
+                        raw = read_file_content(item)
+                        if not raw:
+                            continue
+
+                        # Parse .ipynb cells properly
+                        if item.name.lower().endswith(".ipynb"):
+                            try:
+                                nb = nbformat.reads(raw, as_version=4)
+                                file_text = f"\n\n=== FILE: {item.name} (Jupyter Notebook) ===\n"
+                                for cell in nb.cells:
+                                    if cell.cell_type == "code" and cell.source.strip():
+                                        file_text += f"[CODE]\n{cell.source}\n\n"
+                                    elif cell.cell_type == "markdown" and cell.source.strip():
+                                        file_text += f"[MARKDOWN]\n{cell.source}\n\n"
+                            except Exception:
+                                file_text = f"\n\n=== FILE: {item.name} ===\n{raw}"
+
+                        # For .csv, only keep the first 20 rows
+                        elif item.name.lower().endswith(".csv"):
+                            lines = raw.splitlines()[:20]
+                            file_text = f"\n\n=== FILE: {item.name} (CSV - first 20 rows) ===\n" + "\n".join(lines)
+
+                        else:
+                            file_text = f"\n\n=== FILE: {item.name} ===\n{raw}"
+
+                        # Truncate if this file would exceed the budget
+                        remaining = max_chars - state["chars"]
+                        if len(file_text) > remaining:
+                            file_text = file_text[:remaining] + "\n...[TRUNCATED]"
+
+                        state["text"] += file_text
+                        state["chars"] += len(file_text)
+
+                    elif item.type == "dir" and depth < max_depth:
+                        collect_files(item.path, depth + 1, max_depth)
+
+            except Exception as e:
+                logger.error(f"Error reading repo contents at {path}: {e}")
+
+        collect_files()
+        result = state["text"]
+        return result if result.strip() else None

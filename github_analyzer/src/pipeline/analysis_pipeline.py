@@ -68,29 +68,23 @@ class AnalysisPipeline:
                 return result
 
             result["repo_found"] = repo.name
-            
-            # Find Notebook
-            notebook_file = self.github_connector.get_notebook_file(repo)
-            if not notebook_file:
-                logger.warning(f"No notebook found in {repo.name} for {name}")
-                result["status"] = "No Notebook"
-                return result
-                
-            result["notebook_found"] = notebook_file.name
-            
-            # Check download URL
-            if not notebook_file.download_url:
-                 logger.warning(f"No download URL for notebook in {repo.name}")
-                 result["status"] = "No Download URL"
-                 return result
 
-            logger.info(f"Downloading notebook for {name}...")
-            notebook_text = self.notebook_processor.parse_notebook_from_url(notebook_file.download_url)
-            
-            logger.info(f"Analyzing notebook for {name}...")
-            # analysis = self.llm_engine.analyze_code(notebook_text, questions_content) 
-            # Note: keeping original call, just handling result update next
-            analysis = self.llm_engine.analyze_code(notebook_text, questions_content)
+            # Read ALL repo files instead of just the notebook
+            logger.info(f"Reading entire repo contents for {name}...")
+            repo_text = self.github_connector.get_repo_text_content(repo, max_chars=15000)
+
+            if not repo_text:
+                logger.warning(f"No readable content found in {repo.name} for {name}")
+                result["status"] = "No Content Found"
+                result["notebook_found"] = "No"
+                result["mentor_comments"] = "No Readable Content Found in Repository"
+                result["overall_rating"] = "N/A"
+                return result
+
+            result["notebook_found"] = "Yes (Repo Scan)"
+
+            logger.info(f"Analyzing repo content for {name}...")
+            analysis = self.llm_engine.analyze_code(repo_text, questions_content)
             
             parsed_feedback = self.report_generator.parse_llm_response(analysis)
             result.update(parsed_feedback)
