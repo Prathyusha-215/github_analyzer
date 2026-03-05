@@ -30,106 +30,78 @@ class LLMEngine:
         time.sleep(4)  # Throttle
         
         compression_prompt = """
-        You are a senior data science code reviewer.
+        You are a technical signal extractor preparing a repository summary for an automated hackathon evaluator.
 
-Your task is to analyze and summarize a Jupyter notebook that will later be evaluated by another AI system.
+The repository is a submission for the Smart Railway Resource Planning System hackathon.
+Your summary MUST surface repo-specific details that allow a downstream evaluator to write NON-GENERIC feedback.
 
-IMPORTANT RULES:
-- Be concise but information-dense.
-- Do NOT explain step-by-step code.
-- Do NOT repeat notebook content.
-- Compress aggressively while preserving meaning.
-- Limit the summary to HIGH-VALUE technical signals only.
-
-Focus on extracting WHAT matters for evaluation.
+CRITICAL RULES:
+- Extract EXACT names: column names, function names, file names, variable names, model class names, threshold values.
+- Do NOT write generic observations like "uses pandas" or "has visualizations" — name WHAT specifically.
+- If a detail is not present in the repo, say "Not found" for that field. Do NOT invent.
+- The summary must be UNIQUE to this repo — nothing you write should be applicable to any other project.
 
 ----------------------------------
 
-Return the summary strictly in the following structure:
+Return ONLY this structure (fill every field precisely):
 
 ### 1. Project Objective
-Explain in 2–3 lines what problem the notebook is solving.
+One sentence describing what THIS solution does for railway planning.
 
-### 2. Dataset Understanding
-- Data source (if mentioned)
-- Key features used
-- Target variable (if any)
+### 2. Dataset
+- Source: [real CSV/Excel / synthetic generated / API / not found]
+- Exact column names found (list all relevant ones): e.g. train_id, route, passenger_count, occupancy_rate, num_coaches, platform_no, is_holiday, delay_minutes
+- Missing key fields (from the hackathon requirement): [list what's absent]
+- Row count or data size (if visible): [e.g. 5000 rows, 12 months]
 
-### 3. Data Preprocessing
-Mention only important techniques such as:
-- missing value handling
-- encoding
-- scaling
-- outlier treatment
-- feature engineering
+### 3. Visualizations
+List EACH chart by its exact type and what railway variable it shows:
+- e.g. "Seaborn heatmap of hourly passenger_count by route"
+- e.g. "Plotly bar chart of top 10 high-demand routes by avg occupancy"
+- e.g. "Matplotlib time-series of daily passenger volume for Route A-B"
+If none found: "No visualizations found."
 
-Skip if not present.
+### 4. Prediction / Forecasting
+- Model used: [exact class name, e.g. RandomForestRegressor, LinearRegression, Prophet, ARIMA]
+- Target variable predicted: [e.g. passenger_count, occupancy_rate]
+- Features used: [list the actual input columns]
+- Evaluation metrics with VALUES (if shown): [e.g. RMSE=142.3, R²=0.87]
+- Train/test split approach: [e.g. 80/20 random, time-based split, cross-validation]
+- Overfitting/validation concerns: [note if test set is missing, leakage risk, etc.]
+If none found: "No prediction model found."
 
-### 4. Analysis / Methods Used
-Identify major techniques:
+### 5. Resource Allocation Logic
+- Describe the EXACT logic (copy or paraphrase the decision rule):
+  e.g. "if predicted_occupancy > 0.85 and route in peak_routes: recommend += 1 coach"
+- Output format of recommendation: [e.g. printed table, saved CSV, shown in dashboard]
+- Is logic rule-based or model-driven?
+If none found: "No allocation logic found."
 
-Examples:
-- EDA
-- visualization
-- statistical analysis
-- machine learning models
-- NLP
-- deep learning
+### 6. Dashboard / Web App
+- Framework: [Streamlit / Dash / Flask / FastAPI / Jupyter widgets / none]
+- Interactive features: [filters, dropdowns, date pickers, route selectors — list what exists]
+- What can a user do in the UI? [be specific, e.g. "select a route and see demand forecast"]
+If none found: "No dashboard/UI found."
 
-Avoid listing basic pandas operations.
+### 7. Code Structure
+- Main files and their roles: [e.g. app.py (Streamlit UI), model.py (RandomForest training), data_loader.py (CSV ingestion)]
+- Is logic modular (multiple files/functions) or monolithic (single script)?
+- README present? Does it explain setup + how to run? [yes/no/partial]
 
-### 5. Model Information (If Present)
-Include ONLY:
-- algorithm names
-- train/test split
-- evaluation metrics
-
-DO NOT describe algorithm theory.
-
-### 6. Code Quality Signals
-Briefly comment on:
-- structure
-- modularity
-- readability
-- comments
-- repetition
-
-Keep this under 5 bullet points.
-
-### 7. Key Strengths
-Max 5 bullets.
-
-Only high-impact strengths.
-
-### 8. Key Weaknesses / Gaps
-Max 5 bullets.
-
-Focus on evaluation-critical issues like:
-- missing preprocessing
-- lack of validation
-- no visualization
-- poor structure
-- hardcoding
-
-### 9. Overall Technical Complexity
-Classify as ONE:
-
-Beginner / Intermediate / Advanced
-
-Base this on techniques used — not notebook length.
+### 8. Hackathon Goal Coverage
+For each goal, state PRESENT or MISSING and one-line evidence:
+- Overcrowding Reduction: [PRESENT — identifies routes with occupancy > 90% | MISSING]
+- Coach/Train Allocation: [PRESENT — recommends extra coaches via threshold logic | MISSING]
+- Platform Usage: [PRESENT — platform_no field used in analysis | MISSING]
+- Proactive Scheduling: [PRESENT — 7-day demand forecast generated | MISSING]
 
 ----------------------------------
 
 OUTPUT RULES:
-- Maximum 300-400 words.
-- No fluff.
-- No motivational language.
-- No teaching tone.
-- No emojis.
-- No markdown outside the requested format.
-- Be objective and professional.
-
-The summary will be used for automated grading, so accuracy is critical.
+- Maximum 500 words.
+- No motivational language, no emojis, no teaching tone.
+- Use exact names from the code, not paraphrases.
+- The downstream evaluator will use this summary to write specific feedback — accuracy is critical.
 
         """
         
@@ -169,14 +141,8 @@ The summary will be used for automated grading, so accuracy is critical.
         """
         time.sleep(Config.DELAY_BETWEEN_STUDENTS)  # Throttle
 
-        # Create dynamic prompt based on questions
-        if questions_content:
-            # Inject questions into the system prompt template if needed, 
-            # but current prompts.py logic suggests replacing it or appending.
-            # The previous logic was:
-            system_prompt = SYSTEM_PROMPT.format(questions_content=questions_content)
-        else:
-             system_prompt = SYSTEM_PROMPT.format(questions_content="No specific questions provided.")
+        # Use the system prompt directly (no dynamic questions for hackathon evaluation)
+        system_prompt = SYSTEM_PROMPT
 
         retries = 3
         for attempt in range(retries):
@@ -189,7 +155,7 @@ The summary will be used for automated grading, so accuracy is critical.
                         },
                         {
                             "role": "user",
-                            "content": f"Here is the student's notebook summary:\n\n{summary}",
+                            "content": f"Here is the participant's repository summary:\n\n{summary}",
                         }
                     ],
                     model="llama-3.3-70b-versatile",

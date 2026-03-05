@@ -7,48 +7,57 @@ logger = setup_logging()
 class ReportGenerator:
     def parse_llm_response(self, response_text):
         """
-        Parses the structured LLM response to extract NOTEBOOK TYPE, OVERALL RATING, POSITIVES, NEGATIVES, and IMPROVEMENTS sections.
+        Parses the structured LLM response to extract OVERALL RATING and MENTOR COMMENTS.
+        Handles both inline values ("OVERALL RATING: 7/10") and values on subsequent lines.
         """
         sections = {
-            "notebook_type": "",
             "overall_rating": "",
             "mentor_comments": ""
         }
-        
+
         current_section = None
-        
-        # Updated regex to handle purely capitalized headers, Markdown headers (### HEADER), and Bold headers (**HEADER**)
-        header_pattern = re.compile(r"^[\#\*]*\s*(NOTEBOOK TYPE|OVERALL RATING|MENTOR COMMENTS)[\s\:\*]*", re.IGNORECASE)
-        
+
+        # Matches headers like: "OVERALL RATING", "### OVERALL RATING", "**OVERALL RATING**"
+        # Also captures any inline value after the colon (e.g. "OVERALL RATING: 7/10")
+        header_pattern = re.compile(
+            r"^[#\*\s]*\s*(OVERALL RATING|MENTOR COMMENTS)\s*[:\*#]*\s*(.*)?$",
+            re.IGNORECASE
+        )
+
         lines = response_text.split('\n')
         for line in lines:
             stripped_line = line.strip()
             match = header_pattern.match(stripped_line)
             if match:
-                # Extract section name and remove any markdown symbols
-                raw_section = match.group(1)
-                current_section = raw_section.strip().title()
-                # Normalizing keys to match dictionary keys
-                if current_section.upper() == "MENTOR COMMENTS":
-                    current_section = "mentor_comments"
-                elif current_section.upper() == "NOTEBOOK TYPE":
-                    current_section = "notebook_type"
-                elif current_section.upper() == "OVERALL RATING":
+                raw_section = match.group(1).strip().upper().replace(" ", "_")
+                inline_value = (match.group(2) or "").strip()
+
+                if raw_section == "OVERALL_RATING":
                     current_section = "overall_rating"
+                    # Try to grab value inline (e.g. "OVERALL RATING: 7/10")
+                    if inline_value:
+                        rating_match = re.search(r"(\d{1,2})\s*/\s*10", inline_value)
+                        if not rating_match:
+                            rating_match = re.match(r"(\d{1,2})$", inline_value)
+                        if rating_match:
+                            sections["overall_rating"] = rating_match.group(1) + "/10"
+                elif raw_section == "MENTOR_COMMENTS":
+                    current_section = "mentor_comments"
+                    if inline_value:
+                        sections["mentor_comments"] += inline_value + "\n"
                 continue
-                
+
             if current_section and stripped_line:
-                if current_section == "overall_rating":
-                    # Parse overall rating if it's on a separate line
-                    rating_match = re.match(r"(\d+)/5", stripped_line)
+                if current_section == "overall_rating" and not sections["overall_rating"]:
+                    # Value on the next line
+                    rating_match = re.search(r"(\d{1,2})\s*/\s*10", stripped_line)
+                    if not rating_match:
+                        rating_match = re.match(r"(\d{1,2})$", stripped_line)
                     if rating_match:
-                        sections["overall_rating"] = rating_match.group(1)
-                elif current_section == "notebook_type":
-                    # Extract the notebook type
-                    sections["notebook_type"] = stripped_line
-                else:
-                    sections[current_section] += stripped_line + "\n"
-                
+                        sections["overall_rating"] = rating_match.group(1) + "/10"
+                elif current_section == "mentor_comments":
+                    sections["mentor_comments"] += stripped_line + "\n"
+
         # Strip trailing newlines from each section
         for key in sections:
             sections[key] = sections[key].strip()
@@ -65,6 +74,7 @@ class ReportGenerator:
                 "github_link": "GitHub Link",
                 "repo_found": "Repo Found",
                 "notebook_found": "Notebook Found",
+                "overall_rating": "Overall Rating /10",
                 "mentor_comments": "Mentor Comments"
             }
             
