@@ -1,14 +1,14 @@
 {
     "builds": [
         {
-            "src": "main.py",
+            "src": "github_analyzer/main.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "main.py"
+            "dest": "github_analyzer/main.py"
         }
     ]
 }
