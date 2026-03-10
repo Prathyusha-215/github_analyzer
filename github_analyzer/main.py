@@ -17,12 +17,22 @@ logger = setup_logging()
 load_dotenv()
 
 app = FastAPI(title="GitHub Repository Analyzer")
-templates = Jinja2Templates(directory="templates")
+
+# Absolute path to the templates directory (works in serverless environments)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 async_pipeline = AsyncAnalysisPipeline()
 
-UPLOAD_DIR = os.path.join(os.getcwd(), "uploads")
-OUTPUT_DIR = os.path.join(os.getcwd(), "outputs")
+# On Vercel (serverless), only /tmp is writable. Locally, use project dirs.
+_IS_VERCEL = os.environ.get("VERCEL") == "1"
+if _IS_VERCEL:
+    UPLOAD_DIR = "/tmp/uploads"
+    OUTPUT_DIR = "/tmp/outputs"
+else:
+    UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+    OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
+
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
