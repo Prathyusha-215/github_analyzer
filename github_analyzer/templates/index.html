@@ -4,194 +4,630 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Repository Analyzer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>GitHub Repository Analyzer — AI-Powered Code Review</title>
+    <meta name="description"
+        content="Analyze any GitHub repository with AI. Get instant, evidence-based feedback on code quality, documentation, and structure.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f5f7fa;
+            --surface: #ffffff;
+            --surface2: #f0f2f5;
+            --border: #dde1e7;
+            --accent: #6c63ff;
+            --accent2: #00b894;
+            --text: #1a1d23;
+            --text-muted: #6c757d;
+            --danger: #e74c3c;
+            --success: #00b894;
+            --radius: 14px;
+        }
+
         body {
-            background-color: #f8f9fa;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
+        /* Background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .page-wrap {
+            position: relative;
+            z-index: 1;
         }
 
-        .btn-primary {
-            background-color: #667eea;
-            border-color: #667eea;
-        }
-
-        .btn-primary:hover {
-            background-color: #5a6fd8;
-            border-color: #5a6fd8;
-        }
-
-        .upload-area {
-            border: 2px dashed #dee2e6;
-            border-radius: 10px;
-            padding: 2rem;
+        /* Hero */
+        .hero {
             text-align: center;
-            transition: all 0.3s ease;
+            padding: 80px 20px 50px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(61, 188, 92, 0.12);
+            border: 1px solid rgba(61, 188, 92, 0.4);
+            color: #2a9e4f;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #1a1c2e 30%, #5b52e8 65%, #3dbc5c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Main card */
+        .analyzer-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 760px;
+            margin: 0 auto 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analyzer-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+            border-radius: 2px;
+        }
+
+        /* URL input */
+        .url-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .url-group:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+        }
+
+        .url-group i {
+            color: var(--accent);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .url-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            padding: 6px 0;
+        }
+
+        .url-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        label.field-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            padding: 16px;
+            resize: vertical;
+            min-height: 130px;
+            outline: none;
+            line-height: 1.6;
+            transition: border-color 0.2s;
+        }
+
+        textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+        }
+
+        .field-help {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Submit button */
+        .btn-analyze {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 28px;
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent) 0%, #9b59ff 100%);
+            box-shadow: 0 6px 30px rgba(108, 99, 255, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-analyze:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(108, 99, 255, 0.55);
+        }
+
+        .btn-analyze:active {
+            transform: translateY(0);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 36px 0 24px;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Batch toggle */
+        .batch-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: var(--radius);
+            padding: 10px 20px;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .batch-toggle:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .batch-section {
+            display: none;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .batch-section.open {
+            display: block;
+        }
+
+        /* File upload area */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
         }
 
         .upload-area:hover {
-            border-color: #667eea;
-            background-color: #f8f9ff;
+            border-color: var(--accent);
+            background: rgba(108, 99, 255, 0.05);
         }
 
-        .feature-icon {
+        .upload-area i {
             font-size: 2rem;
-            color: #667eea;
-            margin-bottom: 1rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .upload-area p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 8px 0 0;
+        }
+
+        .upload-area input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-area-wrap {
+            position: relative;
+        }
+
+        .btn-batch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #1e6b4a 0%, var(--accent2) 100%);
+            transition: opacity 0.15s;
+        }
+
+        .btn-batch:hover {
+            opacity: 0.88;
+        }
+
+        /* Error alert */
+        .alert-error {
+            background: rgba(255, 92, 122, 0.12);
+            border: 1px solid rgba(255, 92, 122, 0.35);
+            color: #ff9aac;
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        /* Feature cards row */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 860px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 26px;
+            text-align: center;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .feature-card i {
+            font-size: 1.8rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .fc-purple i {
+            color: var(--accent);
+        }
+
+        .fc-teal i {
+            color: var(--accent2);
+        }
+
+        .fc-pink i {
+            color: #ff6b9d;
+        }
+
+        .fc-orange i {
+            color: #ff9f4a;
+        }
+
+        /* Loader overlay */
+        #loader-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 15, 20, 0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .loader-box {
+            text-align: center;
+        }
+
+        .spinner-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-box p {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .loader-box small {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        /* Container utility */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
         }
     </style>
 </head>
 
 <body>
-    <div class="hero-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 fw-bold mb-3">
-                        <i class="fab fa-github me-3"></i>
-                        GitHub Repository Analyzer
-                    </h1>
-                    <p class="lead">Analyze any student GitHub repository with AI-powered evaluation</p>
-                </div>
+    <div class="page-wrap">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-badge">
+                <i class="fab fa-github"></i>
+                AI-Powered Repository Analyzer
             </div>
+            <h1>Analyze Any GitHub Repo<br>In Seconds</h1>
+            <p>Paste a GitHub URL, describe what you care about, and get expert-level AI feedback on code quality,
+                structure, and documentation — instantly.</p>
         </div>
-    </div>
 
-    <div class="container">
-        {% if error %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ error }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endif %}
-        {% if message %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endif %}
+        <!-- Main form card -->
+        <div class="container">
+            {% if error %}
+            <div class="alert-error">
+                <i class="fas fa-exclamation-circle" style="margin-top:2px;flex-shrink:0;"></i>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
 
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card">
-                    <div class="card-body p-4">
-                        <form action="/analyze" method="POST" enctype="multipart/form-data" id="analyze-form">
-                            <h3 class="card-title mb-4">
-                                <i class="fas fa-upload me-2"></i>
-                                Upload Files
-                            </h3>
+            <div class="analyzer-card">
+                <!-- Single URL form -->
+                <form action="/analyze-single" method="POST" id="single-form">
+                    <label class="field-label"><i class="fab fa-github" style="margin-right:6px;"></i>Repository
+                        URL</label>
+                    <div class="url-group">
+                        <i class="fas fa-link"></i>
+                        <input type="url" name="github_url" id="github_url"
+                            placeholder="https://github.com/username/repository" required autocomplete="off">
+                    </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="students_file" class="form-label fw-bold">
-                                        <i class="fas fa-users me-2"></i>
-                                        Students Excel File
-                                    </label>
-                                    <div class="upload-area">
-                                        <i class="fas fa-file-excel feature-icon"></i>
-                                        <input type="file" class="form-control" id="students_file" name="students_file"
-                                            accept=".xlsx,.xls" required>
-                                        <small class="text-muted">Upload Excel file with student names and GitHub
-                                            links</small>
-                                    </div>
-                                </div>
+                    <label class="field-label" style="margin-top:22px;"><i class="fas fa-bullseye"
+                            style="margin-right:6px;"></i>Evaluation Context <span
+                            style="color:var(--accent2);font-size:0.77rem;text-transform:none;font-weight:400">(optional)</span></label>
+                    <textarea name="user_context" id="user_context"
+                        placeholder="Describe what you want to evaluate, e.g.:&#10;• Is this a production-ready REST API?&#10;• Does it follow good data science practices?&#10;• Evaluate the project for a machine learning internship&#10;&#10;Leave blank for a general code quality review."></textarea>
+                    <p class="field-help"><i class="fas fa-info-circle" style="margin-right:4px;"></i>Your context
+                        shapes the entire evaluation — the more specific you are, the better the feedback.</p>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="questions_file" class="form-label fw-bold">
-                                        <i class="fas fa-question-circle me-2"></i>
-                                        Analysis Questions
-                                    </label>
-                                    <div class="upload-area">
-                                        <i class="fas fa-file-alt feature-icon"></i>
-                                        <input type="file" class="form-control" id="questions_file"
-                                            name="questions_file" accept=".txt" required>
-                                        <small class="text-muted">Upload text file with analysis questions</small>
-                                    </div>
-                                </div>
-                            </div>
+                    <button type="submit" class="btn-analyze" id="analyze-btn">
+                        <i class="fas fa-bolt"></i>
+                        Analyze Repository
+                    </button>
+                </form>
 
+                <!-- Batch toggle -->
+                <div class="divider">OR</div>
+                <button class="batch-toggle" id="batch-toggle" type="button">
+                    <i class="fas fa-table"></i>
+                    Batch Mode — Upload Excel with multiple repos
+                    <i class="fas fa-chevron-down" id="batch-chevron" style="margin-left:auto;font-size:0.7rem;"></i>
+                </button>
 
-
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-play me-2"></i>
-                                    Start Analysis
-                                </button>
-                            </div>
-                        </form>
-                        <!-- Loader Overlay -->
-                        <div id="loader-overlay"
-                            style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.8);z-index:9999;align-items:center;justify-content:center;">
-                            <div class="text-center">
-                                <div class="spinner-border text-primary" style="width:4rem;height:4rem;" role="status">
-                                </div>
-                                <div class="mt-3 fw-bold fs-4 text-primary">Analyzing... Please wait</div>
+                <!-- Batch form (collapsible) -->
+                <div class="batch-section" id="batch-section">
+                    <form action="/analyze" method="POST" enctype="multipart/form-data" id="batch-form">
+                        <label class="field-label"><i class="fas fa-file-excel" style="margin-right:6px;"></i>Students
+                            Excel File</label>
+                        <div class="upload-area-wrap">
+                            <div class="upload-area" id="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <strong id="upload-label">Click to upload or drag & drop</strong>
+                                <p>Excel file with student names and GitHub links (.xlsx, .xls)</p>
+                                <input type="file" name="students_file" id="students_file" accept=".xlsx,.xls" required
+                                    onchange="updateLabel(this)">
                             </div>
                         </div>
-                    </div>
+
+                        <label class="field-label" style="margin-top:20px;"><i class="fas fa-bullseye"
+                                style="margin-right:6px;"></i>Evaluation Context</label>
+                        <textarea name="user_context"
+                            placeholder="Describe what you want to evaluate for all repos, e.g.: Analyze for a data science hackathon — focus on data quality, model selection, and results interpretation."
+                            style="min-height:100px;"></textarea>
+
+                        <button type="submit" class="btn-batch" id="batch-btn">
+                            <i class="fas fa-play"></i>
+                            Start Batch Analysis
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-5">
-        <div class="col-lg-10 mx-auto">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-brain feature-icon"></i>
-                            <h5 class="card-title">AI-Powered Analysis</h5>
-                            <p class="card-text">Advanced LLM evaluation based on your specific questions</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-chart-line feature-icon"></i>
-                            <h5 class="card-title">General Purpose</h5>
-                            <p class="card-text">Analyze any type of coding or data project repository</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-download feature-icon"></i>
-                            <h5 class="card-title">Easy Export</h5>
-                            <p class="card-text">Download comprehensive evaluation reports in Excel format</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Feature cards -->
+        <div class="features">
+            <div class="feature-card fc-purple">
+                <i class="fab fa-github"></i>
+                <h3>Whole Repo Scan</h3>
+                <p>Analyzes README, code, notebooks, and configs — not just a single file.</p>
+            </div>
+            <div class="feature-card fc-teal">
+                <i class="fas fa-brain"></i>
+                <h3>Context-Aware AI</h3>
+                <p>Your evaluation criteria shapes the entire review. Specific in, specific out.</p>
+            </div>
+            <div class="feature-card fc-pink">
+                <i class="fas fa-bolt"></i>
+                <h3>Real-Time</h3>
+                <p>See live progress as the AI scans and evaluates your repository.</p>
+            </div>
+            <div class="feature-card fc-orange">
+                <i class="fas fa-file-excel"></i>
+                <h3>Excel Export</h3>
+                <p>Download comprehensive evaluation reports for offline use or grading.</p>
             </div>
         </div>
-    </div>
+
+        <footer>GitHub Repository Analyzer v2.0 — Powered by Groq LLM</footer>
     </div>
 
-    <footer class="text-center py-4 text-muted">
-        <small>GitHub Repository Analyzer v1.1</small>
-    </footer>
+    <!-- Loading overlay -->
+    <div id="loader-overlay">
+        <div class="loader-box">
+            <div class="spinner-ring"></div>
+            <p>Connecting to GitHub...</p>
+            <small>Redirecting to live status page</small>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('analyze-form').addEventListener('submit', function () {
+        // Batch toggle
+        const batchToggle = document.getElementById('batch-toggle');
+        const batchSection = document.getElementById('batch-section');
+        const batchChevron = document.getElementById('batch-chevron');
+        batchToggle.addEventListener('click', () => {
+            const isOpen = batchSection.classList.toggle('open');
+            batchChevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+        });
+
+        // File label update
+        function updateLabel(input) {
+            const label = document.getElementById('upload-label');
+            if (input.files.length > 0) {
+                label.textContent = input.files[0].name;
+            }
+        }
+
+        // Show loader on submit
+        document.getElementById('single-form').addEventListener('submit', () => {
+            document.getElementById('loader-overlay').style.display = 'flex';
+        });
+        document.getElementById('batch-form').addEventListener('submit', () => {
             document.getElementById('loader-overlay').style.display = 'flex';
         });
     </script>

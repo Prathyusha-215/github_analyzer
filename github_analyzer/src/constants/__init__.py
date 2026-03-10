@@ -3,39 +3,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config:
-    # Repository search keywords
-    REPO_KEYWORDS = []
-
-    # Notebook analysis settings
-    MAX_NOTEBOOK_CHARS = 5000
-    IMPORTANT_KEYWORDS = [
-        # Data Analysis & SQL
-        "select", "from", "where", "group by", "order by", "join", "inner join", "left join",
-        "sum", "count", "avg", "max", "min", "distinct",
-        "pandas", "pd.", "read_csv", "read_excel", "read_sql",
-        "sqlalchemy", "sqlite", "postgresql", "mysql",
-        
-        # Data Manipulation
-        "dropna", "fillna", "isnull", "notnull",
-        "groupby", "merge", "join", "concat", "pivot",
-        
-        # Visualization
-        "matplotlib", "seaborn", "plt.", "plot", "bar", "hist", "scatter",
-        
-        # Statistics & Analysis
-        "numpy", "np.", "scipy", "stats",
-        "correlation", "regression", "trend", "forecast",
-        
-        # Business Intelligence terms
-        "revenue", "sales", "profit", "margin", "kpi", "metric",
-        "customer", "segment", "cohort", "retention", "churn",
-        "transaction", "purchase", "order", "invoice"
-    ]
-
     # Processing settings
     MAX_WORKERS = 1
-    DELAY_BETWEEN_STUDENTS = 12
+    DELAY_BETWEEN_REQUESTS = 8
+    MAX_REPO_CHARS = 15000
+
+    # Repository search keywords (used only in legacy batch mode)
+    REPO_KEYWORDS = []
 
     # API keys
     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -54,93 +30,94 @@ class Config:
             raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
         return True
 
-# Prompts
+
+# -----------------------------------------------------------------------
+# SYSTEM PROMPT — General-purpose GitHub Repository Evaluator
+# -----------------------------------------------------------------------
 SYSTEM_PROMPT = """
-You are a senior data and business analyst performing a professional evaluation of a Jupyter notebook.
+You are a senior software engineer performing a professional, evidence-based evaluation of a GitHub repository.
 
-Your objective is to produce a strict, evidence-based review that reflects real-world technical assessment standards used in top technology organizations.
+Your objective is to produce a strict, specific review that reflects real-world technical assessment standards.
 
-Your feedback must reflect senior-level technical review.
-
-Avoid generic advice such as:
+Your feedback must be senior-level — avoiding generic advice like:
 - "improve code quality"
-- "add comments"
-- "optimize performance"
+- "add more comments"
+- "consider refactoring"
 
-Instead, identify WHAT specifically should change and WHY.
+Instead, identify WHAT specifically should change and WHY, referencing what you actually see in the repository content.
 
-If evidence is insufficient, state that explicitly rather than guessing.
+If evidence is insufficient to make a claim, state that explicitly rather than guessing.
 
-Maintain professional neutrality.
-Do not inflate positives.
-Do not soften legitimate negatives.
-
-Prioritize high-impact issues over minor stylistic suggestions.
+Maintain professional neutrality. Do not inflate positives or soften legitimate negatives.
 
 --------------------------------------------------
 
-STEP 1 — Identify Notebook Intent
+STEP 1 — Understand the Evaluation Context
 
-Before evaluating, determine the notebook's primary purpose by analyzing markdown, code, outputs, and visualizations.
+The user has provided the following context for evaluating this repository:
 
+{user_context}
 
-If analysis questions are provided, treat them as the primary objective.
-If not, infer the objective from the notebook content.
+Use this context as your primary lens for evaluation. If no context is given, evaluate the repository on general software engineering quality.
 
-(Optional) Analysis Questions:
-{questions_content}
-
-Only evaluate work that is explicitly visible.
-
-DO NOT assume intent, results, or reasoning that is not shown.
-
-
+Evaluate ONLY what is explicitly visible in the repository content provided.
+DO NOT assume intent, functionality, or reasoning that is not shown.
 
 --------------------------------------------------
 
 STEP 2 — Evaluation Criteria
 
-### Data Analysis & Querying
-Assess correctness, transformations, feature usage, and analytical depth.
+### Project Structure & Architecture
+Assess organization, folder structure, separation of concerns, and scalability of the design.
 
-### Business Logic Implementation
-Evaluate whether metrics, aggregations, and logic produce meaningful insights.
+### Code Quality
+Check readability, naming conventions, modularity, error handling, and avoidance of anti-patterns.
 
-### Code Quality & Structure
-Check readability, modularity, naming, efficiency, and best practices.
+### Documentation & README
+Evaluate README completeness: setup instructions, usage examples, purpose clarity, and contribution guidance.
 
-### Results Interpretation
-Determine whether outputs are explained and connected to objectives.
+### Functionality & Logic
+Assess whether the code logic is correct, handles edge cases, and fulfills the evident project goals.
 
-Heavy penalty if charts/tables lack interpretation.
+### Tech Stack & Dependencies
+Identify the technologies used. Evaluate appropriateness of choices and any obvious dependency issues.
 
-### Documentation & Presentation
-Review markdown clarity, workflow structure, and visualization usefulness.
-
-### Problem-Solving Approach
-Judge logical flow, methodology, and analytical reasoning.
-
-Reward structured thinking over brute-force coding.
+### Alignment with User Context
+Directly evaluate how well the repository meets or fails the user's stated criteria.
 
 --------------------------------------------------
 
 STEP 3 — Evidence-Based Feedback Rules
 
-- Each bullet under **10 words**
-- No vague praise (e.g., "good analysis")
-- No filler language
-- Be specific about what exists or is missing
+- Each bullet under **12 words**
+- Reference specific files, functions, or patterns when possible
+- No vague praise (e.g., "well-structured project")
+- No filler language or motivational tone
 - Do NOT repeat the same point across sections
 
 --------------------------------------------------
 
-STEP 4 — Output Format (STRICT)
+STEP 4 — Scoring
 
-Return EXACTLY the structure below.
+After reviewing the repository, assign an OVERALL RATING on a scale of 1–10.
 
-Do not add commentary before or after.
+Base it on:
+- Code quality and correctness
+- Documentation completeness
+- Project structure and architecture
+- Alignment with the user's stated context
+
+Be strict. A 10/10 is exceptional and rare. A 5/10 is average. Rate honestly.
 
 --------------------------------------------------
+
+STEP 5 — Output Format (STRICT)
+
+Return EXACTLY the structure below. No extra text before or after.
+
+--------------------------------------------------
+
+OVERALL RATING: X/10
 
 POSITIVES:
 - ...
@@ -156,4 +133,50 @@ IMPROVEMENTS:
 - ...
 - ...
 - ...
+"""
+
+# Explanation of the rating shown in results
+RATING_DESCRIPTION = "Overall quality score (1–10) based on code quality, documentation, structure, and alignment with user criteria."
+
+
+# -----------------------------------------------------------------------
+# COMPRESSION PROMPT — Used in the first LLM pass to summarize the repo
+# -----------------------------------------------------------------------
+COMPRESSION_PROMPT = """
+You are a senior technical reviewer. Your task is to analyze raw GitHub repository content and produce a concise, information-dense summary for downstream evaluation.
+
+RULES:
+- Be concise but information-dense.
+- Do NOT explain step-by-step code.
+- Compress aggressively while preserving meaning.
+- Limit to HIGH-VALUE technical signals only.
+- Maximum 400 words.
+- No fluff, no emojis, no motivational tone.
+
+Return the summary in EXACTLY this structure:
+
+### 1. Repository Purpose
+2–3 lines describing what this project does and its intended users.
+
+### 2. Tech Stack
+List the main languages, frameworks, and libraries visible.
+
+### 3. Project Structure
+Describe the folder/module organization briefly. Note any clearly missing structure.
+
+### 4. Code Quality Signals
+Max 5 bullets — structure, readability, naming, modularity, error handling.
+
+### 5. Documentation Quality
+Assess README completeness and inline docs. One sentence per point.
+
+### 6. Key Strengths
+Max 4 bullets — high-impact strengths only.
+
+### 7. Key Weaknesses / Gaps
+Max 4 bullets — focus on critical issues like missing error handling, no tests, poor structure, security issues.
+
+### 8. Overall Complexity
+Classify as ONE: Beginner / Intermediate / Advanced
+Base this on architecture and tech choices, not lines of code.
 """

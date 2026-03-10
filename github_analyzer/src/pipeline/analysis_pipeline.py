@@ -1,5 +1,5 @@
 from src.components.github_connector import GitHubConnector
-from src.components.notebook_processor import NotebookProcessor
+from src.components.repo_processor import RepoProcessor
 from src.components.llm_engine import LLMEngine
 from src.components.report_generator import ReportGenerator
 from src.utils.common import extract_user_and_repo
@@ -8,97 +8,92 @@ from src.logger.logging_config import setup_logging
 
 logger = setup_logging()
 
+
 class AnalysisPipeline:
     def __init__(self):
         self.github_connector = GitHubConnector()
-        self.notebook_processor = NotebookProcessor()
+        self.repo_processor = RepoProcessor()
         self.llm_engine = LLMEngine()
         self.report_generator = ReportGenerator()
-        self.repo_keywords = Config.REPO_KEYWORDS
 
-    def process_student(self, student, questions_content=None):
+    def process_repo(self, github_url, user_context=None, label=None):
         """
-        Process a single student: fetch repo, parse notebook, analyze, and return result.
+        Process a single GitHub repository URL end-to-end:
+          1. Fetch the repo object
+          2. Collect all repo files → structured text
+          3. Run LLM analysis
+          4. Parse and return structured result dict
+
+        Args:
+            github_url: Full GitHub repository URL
+            user_context: User-provided evaluation criteria / questions
+            label: Optional display name (e.g. student name) for batch mode
         """
-        # Debug logging to investigate missing keys
-        logger.info(f"Processing student data: {student}")
-        
-        name = student.get("name of the student")
-        github_url = student.get("github link")
-        
-        logger.info(f"Extracted - Name: {name}, GitHub URL: {github_url}")
-        
+        logger.info(f"Processing repo: {github_url}")
+
         result = {
-            "student_name": name,
+            "label": label or github_url,
             "github_link": github_url,
             "repo_found": "No",
-            "notebook_found": "No",
-            "notebook_type": "",
+            "files_analyzed": 0,
+            "files_list": [],
             "overall_rating": "",
             "positives": "",
             "negatives": "",
             "improvements": "",
             "status": "Failed"
         }
-        
+
         try:
-            username, repo_name = extract_user_and_repo(github_url)
-            if not username:
-                 raise ValueError("Invalid GitHub URL")
-
-            # Fetch Repo
-            if repo_name:
-                try:
-                    user = self.github_connector.g.get_user(username)
-                    repo = user.get_repo(repo_name)
-                except Exception:
-                    repo = None
-            else:
-                repo = self.github_connector.get_latest_repo_by_keywords(username, self.repo_keywords)
-
+            # 1. Fetch repo
+            repo = self.github_connector.get_repo_by_url(github_url)
             if not repo:
-                if self.repo_keywords:
-                    keywords_str = ', '.join(self.repo_keywords)
-                    logger.warning(f"No repository found with keywords [{keywords_str}] for {name}")
-                    result["status"] = f"No Repository with Keywords"
-                else:
-                    logger.warning(f"No repositories found for {name}")
-                    result["status"] = f"No Repositories Found"
+                result["status"] = "Repo Not Found"
+                logger.warning(f"Could not fetch repo for URL: {github_url}")
                 return result
 
-            result["repo_found"] = repo.name
-            
-            # Find Notebook
-            notebook_file = self.github_connector.get_notebook_file(repo)
-            if not notebook_file:
-                logger.warning(f"No notebook found in {repo.name} for {name}")
-                result["status"] = "No Notebook"
-                return result
-                
-            result["notebook_found"] = notebook_file.name
-            
-            # Check download URL
-            if not notebook_file.download_url:
-                 logger.warning(f"No download URL for notebook in {repo.name}")
-                 result["status"] = "No Download URL"
-                 return result
+            result["repo_found"] = repo.full_name
 
-            logger.info(f"Downloading notebook for {name}...")
-            notebook_text = self.notebook_processor.parse_notebook_from_url(notebook_file.download_url)
-            
-            logger.info(f"Analyzing notebook for {name}...")
-            # analysis = self.llm_engine.analyze_code(notebook_text, questions_content) 
-            # Note: keeping original call, just handling result update next
-            analysis = self.llm_engine.analyze_code(notebook_text, questions_content)
-            
-            parsed_feedback = self.report_generator.parse_llm_response(analysis)
-            result.update(parsed_feedback)
+            # 2. Build repo content summary
+            repo_text, files_read, file_paths = self.repo_processor.build_repo_summary(
+                self.github_connector, repo
+            )
+            result["files_analyzed"] = files_read
+            result["files_list"] = file_paths
+
+            if not repo_text:
+                result["status"] = "No Analyzable Content"
+                logger.warning(f"No content collected from {repo.full_name}")
+                return result
+
+            # 3. Run LLM analysis
+            logger.info(f"Analyzing {repo.full_name} ({files_read} files)...")
+            analysis = self.llm_engine.analyze_repo(repo_text, user_context)
+
+            # 4. Parse result
+            parsed = self.report_generator.parse_llm_response(analysis)
+            result.update(parsed)
             result["status"] = "Success"
-            
-            logger.info(f"Successfully processed {name}")
-            
+            logger.info(f"Successfully analyzed {repo.full_name}")
+
         except Exception as e:
-            logger.error(f"Error processing {name}: {e}")
+            logger.error(f"Error processing {github_url}: {e}")
             result["status"] = f"Error: {str(e)}"
-            
+
+        return result
+
+    def process_student(self, student, user_context=None):
+        """
+        Backward-compatible wrapper for batch (Excel) mode.
+        Maps old student dict format to process_repo().
+        """
+        name = student.get("name of the student", "Unknown")
+        github_url = student.get("github link", "")
+
+        logger.info(f"Processing student: {name}, URL: {github_url}")
+
+        result = self.process_repo(github_url, user_context, label=name)
+
+        # Map label → student_name for backward compat with report generator
+        result["student_name"] = result.pop("label", name)
         return result
