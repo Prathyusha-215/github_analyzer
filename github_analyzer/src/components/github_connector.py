@@ -20,12 +20,12 @@ SKIP_DIRS = {
 class GitHubConnector:
     def __init__(self):
         self.github_token = Config.GITHUB_TOKEN
-        if not self.github_token:
-            raise ValueError("GITHUB_TOKEN not found in configuration")
-        self.g = Github(self.github_token)
+        self.g = Github(self.github_token) if self.github_token else None
 
     def _check_rate_limit(self):
         """Check remaining API calls and wait if necessary."""
+        if not self.g:
+            raise ValueError("GITHUB_TOKEN not found in configuration")
         rate_limit = self.g.get_rate_limit()
         remaining = rate_limit.rate.remaining
         reset_time = rate_limit.rate.reset

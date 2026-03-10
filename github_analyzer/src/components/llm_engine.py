@@ -9,9 +9,7 @@ logger = setup_logging()
 class LLMEngine:
     def __init__(self):
         self.api_key = Config.GROQ_API_KEY
-        if not self.api_key:
-            raise ValueError("GROQ_API_KEY not found in configuration")
-        self.client = Groq(api_key=self.api_key)
+        self.client = Groq(api_key=self.api_key) if self.api_key else None
 
     def analyze_repo(self, repo_content, user_context=None):
         """
@@ -27,6 +25,8 @@ class LLMEngine:
         Compresses repository content into a focused technical summary
         using a fast model. Falls back to truncated raw content on failure.
         """
+        if not self.client:
+            raise ValueError("GROQ_API_KEY not found in configuration")
         time.sleep(4)  # Throttle
 
         retries = 3
@@ -62,6 +62,8 @@ class LLMEngine:
         Evaluates a compressed repo summary against the user's criteria.
         Returns structured POSITIVES / NEGATIVES / IMPROVEMENTS feedback.
         """
+        if not self.client:
+            raise ValueError("GROQ_API_KEY not found in configuration")
         time.sleep(Config.DELAY_BETWEEN_REQUESTS)
 
         ctx = user_context if user_context and user_context.strip() else \
