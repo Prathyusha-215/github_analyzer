@@ -5,7 +5,7 @@ import uuid
 import logging
 from typing import List, Optional
 from fastapi import FastAPI, UploadFile, File, Form, Request, BackgroundTasks, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, Response
 from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
 
@@ -45,6 +45,10 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 async def index(request: Request):
     """Render the home page."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
 
 
 # -----------------------------------------------------------------------
