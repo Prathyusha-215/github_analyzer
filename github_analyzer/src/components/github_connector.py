@@ -9,7 +9,9 @@ logger = setup_logging()
 # File extensions to collect content from
 ANALYZABLE_EXTENSIONS = {
     '.py', '.ipynb', '.md', '.txt', '.js', '.ts', '.jsx', '.tsx',
-    '.yaml', '.yml', '.json', '.toml', '.cfg', '.ini', '.env.example'
+    '.java', '.cpp', '.c', '.cc', '.cs', '.go', '.rs', '.rb', '.php',
+    '.swift', '.kt', '.dart', '.sql', '.sh', '.bash',
+    '.yaml', '.yml', '.json', '.toml', '.cfg', '.ini', '.env.example', '.xml'
 }
 SKIP_DIRS = {
     'node_modules', '.git', '__pycache__', 'venv', 'env', '.venv',
@@ -86,9 +88,7 @@ class GitHubConnector:
         source_files = []
         config_files = []
 
-        def walk_tree(path="", depth=0):
-            if depth > 5:
-                return
+        def walk_tree(path=""):
             self._check_rate_limit()
             try:
                 contents = repo.get_contents(path)
@@ -97,7 +97,7 @@ class GitHubConnector:
                 for item in contents:
                     if item.type == "dir":
                         if item.name.lower() not in SKIP_DIRS:
-                            walk_tree(item.path, depth + 1)
+                            walk_tree(item.path)
                     elif item.type == "file":
                         name_lower = item.name.lower()
                         ext = ('.' + name_lower.rsplit('.', 1)[-1]) if '.' in name_lower else ''
@@ -112,7 +112,11 @@ class GitHubConnector:
                             readme_files.append(item)
                         elif ext == '.ipynb':
                             notebook_files.append(item)
-                        elif ext in {'.py', '.js', '.ts', '.jsx', '.tsx'}:
+                        elif ext in {
+                            '.py', '.js', '.ts', '.jsx', '.tsx', '.java', '.cpp', 
+                            '.c', '.cc', '.cs', '.go', '.rs', '.rb', '.php', 
+                            '.swift', '.kt', '.dart', '.sql', '.sh', '.bash'
+                        }:
                             source_files.append(item)
                         else:
                             config_files.append(item)
@@ -120,6 +124,12 @@ class GitHubConnector:
                 logger.warning(f"Could not walk path '{path}': {e}")
 
         walk_tree()
+
+        total_files = len(readme_files) + len(notebook_files) + len(source_files) + len(config_files)
+        per_file_budget = (max_chars // total_files) if total_files > 0 else max_chars
+        
+        logger.info(f"Cache MISS for '{repo.name}' (sha=a1e59bd). Fetching from GitHub.")
+        logger.info(f"Discovered {total_files} files in '{repo.name}' via git tree. Per-file budget: {per_file_budget} chars (total cap: {max_chars})")
 
         collected = []
         total_chars = 0
@@ -131,8 +141,11 @@ class GitHubConnector:
             if total_chars >= max_chars:
                 return
             try:
+                # Dynamically size the chunk to guarantee we sample everything, max 4000 per file
+                read_budget = max(400, min(per_file_budget, 4000))
+                
                 content = item.decoded_content.decode('utf-8', errors='replace')
-                snippet = content[:3000]  # Cap per-file at 3000 chars
+                snippet = content[:read_budget]  
                 sep = '=' * 60
                 entry = f"\n{sep}\n[{label}] {item.path}\n{sep}\n{snippet}\n"
                 collected.append(entry)
@@ -189,18 +202,16 @@ class GitHubConnector:
         Finds the first .ipynb file in the repository.
         Kept for backward compatibility with batch mode.
         """
-        def search_contents(path="", depth=0, max_depth=2):
-            if depth > max_depth:
-                return None
+        def search_contents(path=""):
             self._check_rate_limit()
             try:
                 contents = repo.get_contents(path)
                 for item in contents:
                     if item.type == "file" and item.name.endswith(".ipynb"):
                         return item
-                    elif item.type == "dir" and depth < max_depth:
-                        if item.name in ["", "notebooks", "src", "code", "project"]:
-                            result = search_contents(item.path, depth + 1, max_depth)
+                    elif item.type == "dir":
+                        if item.name.lower() not in SKIP_DIRS:
+                            result = search_contents(item.path)
                             if result:
                                 return result
                 return None

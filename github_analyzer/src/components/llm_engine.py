@@ -18,7 +18,13 @@ class LLMEngine:
           2. Evaluate that summary against user context (capable model)
         """
         summary = self.compress_repo_content(repo_content)
-        return self.evaluate_summary(summary, user_context)
+        if summary:
+            logger.info(f"Compression OK: {len(summary)} chars summary produced.")
+            
+        raw_response = self.evaluate_summary(summary, user_context)
+        logger.info(f"[LLM RAW RESPONSE]: {repr(raw_response)}")
+        
+        return raw_response
 
     def compress_repo_content(self, repo_content):
         """
@@ -60,7 +66,7 @@ class LLMEngine:
     def evaluate_summary(self, summary, user_context=None):
         """
         Evaluates a compressed repo summary against the user's criteria.
-        Returns structured POSITIVES / NEGATIVES / IMPROVEMENTS feedback.
+        Returns structured OVERALL SCORE / CATEGORY SCORES / KEY STRENGTHS / CRITICAL ISSUES / SUMMARY feedback.
         """
         if not self.client:
             raise ValueError("GROQ_API_KEY not found in configuration")

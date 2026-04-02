@@ -37,10 +37,12 @@ class AnalysisPipeline:
             "repo_found": "No",
             "files_analyzed": 0,
             "files_list": [],
-            "overall_rating": "",
-            "positives": "",
-            "negatives": "",
-            "improvements": "",
+            "overall_score": "",
+            "category_scores": "",
+            "key_strengths": "",
+            "critical_issues": "",
+            "task_completion": "",
+            "summary": "",
             "status": "Failed"
         }
 

@@ -8,61 +8,32 @@ logger = setup_logging()
 class ReportGenerator:
     def parse_llm_response(self, response_text):
         """
-        Parses the structured LLM response to extract POSITIVES, NEGATIVES, and IMPROVEMENTS.
+        Parses the structured LLM response to extract just the score.
+        Expected format: OVERALL SCORE: X/100 (or similar variant).
+        The checklist above it serves only as a math scratchpad and is ignored.
         """
-        header_pattern = re.compile(
-            r"^[\#\*]*\s*(OVERALL RATING|POSITIVES|NEGATIVES|IMPROVEMENTS)[\s\:\*]*",
-            re.IGNORECASE
-        )
         sections = {
-            "overall_rating": "",
-            "positives": "",
-            "negatives": "",
-            "improvements": ""
+            "overall_score": "",
+            "category_scores": "",
+            "key_strengths": "",
+            "critical_issues": "",
+            "task_completion": "",
+            "summary": ""
         }
 
-        current_section = None
-        lines = response_text.split('\n')
-        for line in lines:
-            stripped_line = line.strip()
-            match = header_pattern.match(stripped_line)
+        # Grab the X/100 format directly, which bypasses the addition sequence
+        match = re.search(r"(\d+(?:\.\d+)?)/100", response_text)
+        if match:
+            sections["overall_score"] = match.group(1) + "/100"
+        else:
+            # Fallback if they just put SCORE: X
+            match = re.search(r"(?:SCORE|Score).*?(\d{1,3}(?:\.\d+)?)", response_text)
             if match:
-                raw_section = match.group(1).upper()
-                # Everything after the header keyword on the same line
-                remainder = stripped_line[match.end():].strip().lstrip(':').strip()
+                # To avoid picking up the first number of the sum, let's grab all numbers and take the last
+                numbers = re.findall(r"\d+(?:\.\d+)?", response_text)
+                if numbers:
+                    sections["overall_score"] = numbers[-1] + "/100"
 
-                if raw_section == "OVERALL RATING":
-                    current_section = "overall_rating"
-                    # Try to grab the value right off the header line itself
-                    if remainder:
-                        inline_rating = re.search(r"(\d+(?:\.\d+)?)(?:\/10)?", remainder)
-                        if inline_rating:
-                            val = inline_rating.group(1)
-                            sections["overall_rating"] = val + "/10"
-                elif raw_section == "POSITIVES":
-                    current_section = "positives"
-                elif raw_section == "NEGATIVES":
-                    current_section = "negatives"
-                elif raw_section == "IMPROVEMENTS":
-                    current_section = "improvements"
-                else:
-                    current_section = None
-                continue
-
-            if current_section and stripped_line:
-                if current_section == "overall_rating":
-                    # Value on next line (fallback)
-                    if not sections["overall_rating"]:
-                        rating_match = re.search(r"(\d+(?:\.\d+)?)\/10", stripped_line)
-                        if rating_match:
-                            sections["overall_rating"] = rating_match.group(1) + "/10"
-                        elif re.match(r"^\d+$", stripped_line):
-                            sections["overall_rating"] = stripped_line + "/10"
-                else:
-                    sections[current_section] += stripped_line + "\n"
-
-        for key in sections:
-            sections[key] = sections[key].strip()
         return sections
 
     def write_evaluation_file(self, results, output_file="evaluation.xlsx"):
@@ -75,10 +46,7 @@ class ReportGenerator:
                 "github_link": "GitHub Link",
                 "repo_found": "Repo Found",
                 "files_analyzed": "Files Analyzed",
-                "overall_rating": "Overall Rating",
-                "positives": "Positives",
-                "negatives": "Negatives",
-                "improvements": "Improvements"
+                "overall_score": "Overall Score (/100)"
             }
 
             df = pd.DataFrame(results)
