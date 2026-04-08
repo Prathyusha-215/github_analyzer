@@ -6,8 +6,7 @@ def setup_logging(log_file_path="logs.txt"):
     """
     Configures logging to write to both a file and console.
     """
-    if os.environ.get("VERCEL") == "1":
-        log_file_path = "/tmp/logs.txt"
+    # Default logging config without Vercel checks
         
     logging.basicConfig(
         level=logging.INFO,

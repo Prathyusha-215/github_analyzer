@@ -65,14 +65,8 @@ templates.env.globals['fileicon'] = _fileicon
 
 async_pipeline = AsyncAnalysisPipeline()
 
-# On Vercel (serverless), only /tmp is writable. Locally, use project dirs.
-_IS_VERCEL = os.environ.get("VERCEL") == "1"
-if _IS_VERCEL:
-    UPLOAD_DIR = "/tmp/uploads"
-    OUTPUT_DIR = "/tmp/outputs"
-else:
-    UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-    OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
