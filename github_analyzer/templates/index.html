@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Repository Analyzer — AI-Powered Code Review</title>
+    <title>GitHub Repository Analyzer — AI-Powered Code Review for Any Repository</title>
     <meta name="description"
-        content="Analyze any GitHub repository with AI. Get instant, evidence-based feedback on code quality, documentation, and structure.">
+        content="Analyze any GitHub repository with AI — Python, JavaScript, Go, Rust, Java, and more. Get instant, evidence-based feedback on code quality, documentation, testing, and security.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -21,11 +21,8 @@
 
         :root {
             --hero-from: #4c5ecf;
-            /* blue */
             --hero-to: #8b42c8;
-            /* deep purple */
             --accent: #5b6dd4;
-            /* button / badge blue-purple */
             --accent-dark: #3b4baf;
             --accent-light: #7b88e8;
             --bg: #f5f7fa;
@@ -80,15 +77,9 @@
             font-size: 0.95rem;
         }
 
-        .nav-logo span span {
-            color: var(--accent);
-        }
+        .nav-logo span span { color: var(--accent); }
 
-
-        .nav-pills {
-            display: flex;
-            gap: 6px;
-        }
+        .nav-pills { display: flex; gap: 6px; }
 
         .nav-pill {
             padding: 6px 16px;
@@ -102,12 +93,10 @@
             transition: background 0.15s, color 0.15s;
         }
 
-        .nav-pill:hover,
-        .nav-pill.active {
+        .nav-pill:hover, .nav-pill.active {
             background: #eef0ff;
             color: var(--accent);
         }
-
 
         /* ── HERO ── */
         .hero {
@@ -151,26 +140,43 @@
             letter-spacing: -0.02em;
         }
 
-        .hero h1 em {
-            font-style: normal;
-            opacity: 0.82;
-        }
+        .hero h1 em { font-style: normal; opacity: 0.82; }
 
         .hero-sub {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.85);
-            max-width: 500px;
+            max-width: 560px;
             margin: 0 auto 42px;
             line-height: 1.7;
         }
 
-        /* ── HOW IT WORKS (3 simple steps inside hero) ── */
+        /* Lang badges inside hero */
+        .lang-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 36px;
+        }
+
+        .lang-badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #fff;
+            border-radius: 50px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── HOW IT WORKS ── */
         .hero-steps {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 0;
         }
 
         .hero-step {
@@ -199,7 +205,7 @@
             flex-shrink: 0;
         }
 
-        /* ── MAIN FORM CARD (floating, overlapping hero) ── */
+        /* ── FLOATING FORM CARD ── */
         .form-wrap {
             max-width: 780px;
             margin: -52px auto 0;
@@ -240,23 +246,11 @@
             transition: color 0.2s, border-color 0.2s;
         }
 
-        .form-tab.active {
-            color: var(--accent-dark);
-            border-bottom-color: var(--accent);
-        }
+        .form-tab.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+        .form-tab:hover:not(.active) { color: var(--text); }
 
-        .form-tab:hover:not(.active) {
-            color: var(--text);
-        }
-
-        .form-pane {
-            display: none;
-            padding: 36px;
-        }
-
-        .form-pane.active {
-            display: block;
-        }
+        .form-pane { display: none; padding: 36px; }
+        .form-pane.active { display: block; }
 
         /* Field styles */
         .field-label {
@@ -271,10 +265,7 @@
             margin-bottom: 10px;
         }
 
-        .field-label i {
-            color: var(--accent);
-        }
-
+        .field-label i { color: var(--accent); }
 
         .url-input-wrap {
             display: flex;
@@ -292,11 +283,7 @@
             box-shadow: 0 0 0 3px rgba(91, 109, 212, 0.12);
         }
 
-        .url-input-wrap i {
-            color: var(--accent);
-            flex-shrink: 0;
-        }
-
+        .url-input-wrap i { color: var(--accent); flex-shrink: 0; }
 
         .url-input-wrap input {
             flex: 1;
@@ -309,13 +296,9 @@
             padding: 4px 0;
         }
 
-        .url-input-wrap input::placeholder {
-            color: #b0b7c3;
-        }
+        .url-input-wrap input::placeholder { color: #b0b7c3; }
 
-        .field-gap {
-            margin-top: 24px;
-        }
+        .field-gap { margin-top: 24px; }
 
         textarea.context-area {
             width: 100%;
@@ -327,15 +310,13 @@
             font-size: 0.93rem;
             padding: 14px 18px;
             resize: vertical;
-            min-height: 120px;
+            min-height: 128px;
             outline: none;
             line-height: 1.65;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        textarea.context-area::placeholder {
-            color: #b0b7c3;
-        }
+        textarea.context-area::placeholder { color: #b0b7c3; }
 
         textarea.context-area:focus {
             border-color: var(--accent);
@@ -349,12 +330,6 @@
             display: flex;
             align-items: flex-start;
             gap: 6px;
-        }
-
-        .field-hint i {
-            margin-top: 2px;
-            color: var(--purple-mid);
-            flex-shrink: 0;
         }
 
         /* Submit button */
@@ -384,19 +359,14 @@
             box-shadow: 0 10px 32px rgba(76, 94, 207, 0.45);
         }
 
-        .btn-submit:active {
-            transform: translateY(0);
-        }
+        .btn-submit:active { transform: translateY(0); }
 
         .btn-batch-submit {
             background: linear-gradient(135deg, #5b6dd4 0%, #8b42c8 100%);
             box-shadow: 0 6px 24px rgba(91, 109, 212, 0.35);
         }
 
-        .btn-batch-submit:hover {
-            box-shadow: 0 10px 32px rgba(91, 109, 212, 0.45);
-        }
-
+        .btn-batch-submit:hover { box-shadow: 0 10px 32px rgba(91, 109, 212, 0.45); }
 
         /* Upload area */
         .upload-zone {
@@ -409,30 +379,10 @@
             position: relative;
         }
 
-        .upload-zone:hover {
-            border-color: var(--accent);
-            background: #f0f2ff;
-        }
-
-
-        .upload-zone i {
-            font-size: 2.2rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-
-        .upload-zone .upload-label {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .upload-zone .upload-hint {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-top: 6px;
-        }
+        .upload-zone:hover { border-color: var(--accent); background: #f0f2ff; }
+        .upload-zone i { font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
+        .upload-zone .upload-label { font-weight: 600; font-size: 0.95rem; }
+        .upload-zone .upload-hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
 
         .upload-zone input[type=file] {
             position: absolute;
@@ -457,9 +407,9 @@
             gap: 10px;
         }
 
-        /* ── FEATURES ROW ── */
+        /* ── FEATURES SECTION ── */
         .features-section {
-            max-width: 860px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px 80px;
         }
@@ -469,7 +419,14 @@
             font-size: 1.5rem;
             font-weight: 800;
             color: var(--text);
-            margin-bottom: 32px;
+            margin-bottom: 10px;
+        }
+
+        .features-section .section-sub {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 36px;
         }
 
         .features-grid {
@@ -505,37 +462,15 @@
             margin: 0 auto 16px;
         }
 
-        .fi-green {
-            background: #eef0ff;
-            color: var(--accent);
-        }
+        .fi-green  { background: #eef0ff; color: var(--accent); }
+        .fi-purple { background: #f4eeff; color: #8b42c8; }
+        .fi-orange { background: #fff7ed; color: #c2410c; }
+        .fi-blue   { background: #eff6ff; color: #1d4ed8; }
+        .fi-teal   { background: #f0fdfa; color: #0d9488; }
+        .fi-rose   { background: #fff1f2; color: #e11d48; }
 
-        .fi-purple {
-            background: #f4eeff;
-            color: #8b42c8;
-        }
-
-        .fi-orange {
-            background: #fff7ed;
-            color: #c2410c;
-        }
-
-        .fi-blue {
-            background: #eff6ff;
-            color: #1d4ed8;
-        }
-
-        .feature-card h3 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .feature-card p {
-            font-size: 0.82rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
+        .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+        .feature-card p  { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
         /* ── FOOTER ── */
         footer {
@@ -570,17 +505,9 @@
             animation: spin 0.8s linear infinite;
         }
 
-        .loader-text {
-            font-weight: 600;
-            color: var(--text);
-            font-size: 0.95rem;
-        }
+        .loader-text { font-weight: 600; color: var(--text); font-size: 0.95rem; }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 
@@ -600,25 +527,32 @@
     <!-- Hero -->
     <div class="hero">
         <div class="hero-eyebrow">
-            <i class="fas fa-bolt"></i> AI-Powered · Real-Time · Any Repository
+            <i class="fas fa-bolt"></i> AI-Powered · Real-Time · Any Repository · Any Language
         </div>
         <h1>Analyze Any GitHub Repo<br><em>Instantly with AI</em></h1>
-        <p class="hero-sub">Paste a URL, describe your criteria, and receive detailed AI feedback on code quality,
-            documentation, and structure — in seconds.</p>
+        <p class="hero-sub">
+            Paste a URL, describe your criteria, and get deep AI feedback on code quality,
+            security, documentation, and architecture — for any language or stack.
+        </p>
+
+        <!-- Language badges -->
+        <div class="lang-badges">
+            <span class="lang-badge">Python</span>
+            <span class="lang-badge">JavaScript / TypeScript</span>
+            <span class="lang-badge">Go</span>
+            <span class="lang-badge">Rust</span>
+            <span class="lang-badge">Java / Kotlin</span>
+            <span class="lang-badge">C / C++</span>
+            <span class="lang-badge">Ruby</span>
+            <span class="lang-badge">PHP</span>
+            <span class="lang-badge">Swift</span>
+            <span class="lang-badge">& more</span>
+        </div>
 
         <div class="hero-steps">
-            <div class="hero-step">
-                <div class="step-num">1</div>
-                <span>Paste GitHub URL</span>
-            </div>
-            <div class="hero-step">
-                <div class="step-num">2</div>
-                <span>Describe your criteria</span>
-            </div>
-            <div class="hero-step">
-                <div class="step-num">3</div>
-                <span>Get AI feedback</span>
-            </div>
+            <div class="hero-step"><div class="step-num">1</div><span>Paste GitHub URL</span></div>
+            <div class="hero-step"><div class="step-num">2</div><span>Describe your criteria</span></div>
+            <div class="hero-step"><div class="step-num">3</div><span>Get AI feedback</span></div>
         </div>
     </div>
 
@@ -650,25 +584,25 @@
                     </label>
                     <div class="url-input-wrap">
                         <i class="fas fa-link"></i>
-                        <input type="url" name="github_url" placeholder="https://github.com/username/repository"
+                        <input type="url" name="github_url"
+                            placeholder="https://github.com/username/repository"
                             required autocomplete="off">
                     </div>
 
                     <div class="field-gap">
                         <label class="field-label">
                             <i class="fas fa-bullseye"></i> Evaluation Context
-                            <span
-                                style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;color:#a0aab4;margin-left:4px;">(optional)</span>
+                            <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;color:#a0aab4;margin-left:4px;">(optional)</span>
                         </label>
                         <textarea class="context-area" name="user_context"
-                            placeholder="Describe what to evaluate, e.g.:&#10;• Is this production-ready? Focus on code quality and error handling&#10;• Evaluate for a machine learning internship&#10;• Check if this follows REST API best practices&#10;&#10;Leave blank for a general software engineering review."></textarea>
+                            placeholder="Describe what to evaluate, for example:&#10;• Is this production-ready? Focus on error handling, security, and test coverage&#10;• Evaluate this Go API for clean architecture and performance patterns&#10;• Review this React app for accessibility and component reusability&#10;• Check if this Rust library follows idiomatic patterns&#10;• Assess this DevOps repo for IaC best practices&#10;&#10;Leave blank for a general software engineering review."></textarea>
                         <p class="field-hint">
                             <i class="fas fa-lightbulb"></i>
-                            The more specific your context, the more targeted and useful the AI feedback will be.
+                            The more specific your context, the more targeted and actionable the AI feedback will be.
                         </p>
                     </div>
 
-                    <button type="submit" class="btn-submit">
+                    <button type="submit" class="btn-submit" id="btn-analyze-single">
                         <i class="fas fa-bolt"></i>
                         Analyze Repository
                     </button>
@@ -679,12 +613,12 @@
             <div class="form-pane" id="pane-batch">
                 <form action="/analyze" method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
                     <label class="field-label">
-                        <i class="fas fa-file-excel"></i> Students Excel File
+                        <i class="fas fa-file-excel"></i> Repositories Excel File
                     </label>
                     <div class="upload-zone" id="upload-zone">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <div class="upload-label" id="upload-label">Click to upload or drag & drop</div>
-                        <div class="upload-hint">Columns: "name of the student", "github link" — .xlsx or .xls</div>
+                        <div class="upload-label" id="upload-label">Click to upload or drag &amp; drop</div>
+                        <div class="upload-hint">Required columns: "name of the student", "github link" — .xlsx or .xls</div>
                         <input type="file" name="students_file" accept=".xlsx,.xls" required
                             onchange="onFileChange(this)">
                     </div>
@@ -694,11 +628,11 @@
                             <i class="fas fa-bullseye"></i> Evaluation Context
                         </label>
                         <textarea class="context-area" name="user_context"
-                            placeholder="Describe the evaluation criteria for all students, e.g.:&#10;Analyze for a Data Science Hackathon — focus on data quality, model selection, and results interpretation."
+                            placeholder="Describe the evaluation criteria for all repositories, e.g.:&#10;Evaluate for a hackathon — assess completeness, code quality, documentation, and creativity."
                             style="min-height:100px;"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-submit btn-batch-submit">
+                    <button type="submit" class="btn-submit btn-batch-submit" id="btn-analyze-batch">
                         <i class="fas fa-play"></i>
                         Start Batch Analysis
                     </button>
@@ -710,32 +644,33 @@
     <!-- Features -->
     <div class="features-section">
         <h2>Why use GitHub Analyzer?</h2>
+        <p class="section-sub">Production-grade analysis for any codebase — no setup required.</p>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon fi-green"><i class="fab fa-github"></i></div>
-                <h3>Full Repo Scan</h3>
-                <p>Reads README, source files, notebooks, and configs — not just a single file.</p>
+                <div class="feature-icon fi-green"><i class="fas fa-globe"></i></div>
+                <h3>Any Language</h3>
+                <p>Supports 40+ file types: Python, Go, Rust, Java, JS/TS, C++, Ruby, Swift, and more.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon fi-purple"><i class="fas fa-brain"></i></div>
-                <h3>Context-Aware AI</h3>
-                <p>Your criteria shapes the review. Specific in — specific, actionable feedback out.</p>
+                <div class="feature-icon fi-purple"><i class="fas fa-sitemap"></i></div>
+                <h3>Unlimited Depth</h3>
+                <p>Fetches the complete repo tree in one API call — no folder left behind.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon fi-orange"><i class="fas fa-bolt"></i></div>
                 <h3>Real-Time Results</h3>
-                <p>Progress updates as the AI scans and evaluates. No waiting for batch jobs.</p>
+                <p>Live progress updates as AI scans and evaluates. No waiting in the dark.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon fi-blue"><i class="fas fa-file-excel"></i></div>
+                <div class="feature-icon fi-rose"><i class="fas fa-file-excel"></i></div>
                 <h3>Excel Export</h3>
-                <p>Download full evaluation reports with ratings and feedback for each repo.</p>
+                <p>Download full evaluation reports with ratings and feedback for every repo.</p>
             </div>
         </div>
     </div>
 
     <footer>
-        GitHub Repository Analyzer v2.0 — Powered by Groq LLM &nbsp;·&nbsp; Built with FastAPI
+        GitHub Repository Analyzer v3.0 &nbsp;·&nbsp; Universal AI Code Review &nbsp;·&nbsp; Powered by Groq LLM &nbsp;·&nbsp; Built with FastAPI
     </footer>
 
     <!-- Loader overlay -->

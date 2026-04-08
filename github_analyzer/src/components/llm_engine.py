@@ -9,12 +9,12 @@ logger = setup_logging()
 class LLMEngine:
     def __init__(self):
         self.api_key = Config.GROQ_API_KEY
-        self.client = Groq(api_key=self.api_key) if self.api_key else None
+        self.client  = Groq(api_key=self.api_key) if self.api_key else None
 
     def analyze_repo(self, repo_content, user_context=None):
         """
         Two-step evaluation pipeline:
-          1. Compress raw repo content into a focused summary (fast / cheap model)
+          1. Compress raw repo content into a focused technical summary (fast model)
           2. Evaluate that summary against user context (capable model)
         """
         summary = self.compress_repo_content(repo_content)
@@ -36,26 +36,36 @@ class LLMEngine:
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are a technical summarizer. Create concise, factual summaries of GitHub repositories.",
+                            "content": (
+                                "You are an experienced technical mentor. "
+                                "Produce concise, factual summaries of student/hackathon GitHub repositories."
+                            ),
                         },
                         {
                             "role": "user",
-                            "content": f"{COMPRESSION_PROMPT}\n\nRepository content:\n\n{repo_content}",
+                            "content": (
+                                f"{COMPRESSION_PROMPT}\n\n"
+                                f"Repository content:\n\n{repo_content}"
+                            ),
                         }
                     ],
                     model="llama-3.1-8b-instant",
                     temperature=0.3,
-                    max_tokens=500,
+                    max_tokens=800,      # raised from 500 for richer summaries
                 )
                 return chat_completion.choices[0].message.content
+
             except Exception as e:
                 if "429" in str(e) and attempt < retries - 1:
                     wait_time = (attempt + 1) * 30
-                    logger.warning(f"Compression rate limit hit (Attempt {attempt+1}/{retries}). Sleeping {wait_time}s...")
+                    logger.warning(
+                        f"Compression rate limit hit (Attempt {attempt+1}/{retries}). "
+                        f"Sleeping {wait_time}s..."
+                    )
                     time.sleep(wait_time)
                 else:
-                    logger.warning(f"Compression failed, using raw content: {e}")
-                    return repo_content[:3000]
+                    logger.warning(f"Compression failed, using raw content fallback: {e}")
+                    return repo_content[:4000]
 
     def evaluate_summary(self, summary, user_context=None):
         """
@@ -66,8 +76,14 @@ class LLMEngine:
             raise ValueError("GROQ_API_KEY not found in configuration")
         time.sleep(Config.DELAY_BETWEEN_REQUESTS)
 
-        ctx = user_context if user_context and user_context.strip() else \
-            "Evaluate this repository on general software engineering quality: code quality, documentation, structure, and best practices."
+        ctx = (
+            user_context if user_context and user_context.strip()
+            else (
+                "Evaluate this repository as a student or hackathon project. Focus on code readability, "
+                "logical organization, basic documentation, and core functionality. Do not penalize for "
+                "missing enterprise features."
+            )
+        )
 
         system_prompt = SYSTEM_PROMPT.format(user_context=ctx)
 
@@ -76,10 +92,7 @@ class LLMEngine:
             try:
                 chat_completion = self.client.chat.completions.create(
                     messages=[
-                        {
-                            "role": "system",
-                            "content": system_prompt,
-                        },
+                        {"role": "system", "content": system_prompt},
                         {
                             "role": "user",
                             "content": f"Here is the repository summary:\n\n{summary}",
@@ -89,10 +102,14 @@ class LLMEngine:
                     temperature=0.1,
                 )
                 return chat_completion.choices[0].message.content
+
             except Exception as e:
                 if "429" in str(e) and attempt < retries - 1:
                     wait_time = (attempt + 1) * 30
-                    logger.warning(f"Evaluation rate limit hit (Attempt {attempt+1}/{retries}). Sleeping {wait_time}s...")
+                    logger.warning(
+                        f"Evaluation rate limit hit (Attempt {attempt+1}/{retries}). "
+                        f"Sleeping {wait_time}s..."
+                    )
                     time.sleep(wait_time)
                 else:
                     raise Exception(f"Error calling Groq API: {e}")

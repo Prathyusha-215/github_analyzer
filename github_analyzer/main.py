@@ -1,5 +1,6 @@
 
 import os
+from markupsafe import Markup
 import shutil
 import uuid
 import logging
@@ -21,6 +22,47 @@ app = FastAPI(title="GitHub Repository Analyzer")
 # Absolute path to the templates directory (works in serverless environments)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+
+# ── Jinja2 helper: map file path → Font Awesome icon HTML ────────────────
+def _fileicon(path: str) -> str:
+    """
+    Returns a Font Awesome <i> tag appropriate for the given file path.
+    Used in results.html via {{ fileicon(fp) | safe }}.
+    """
+    fname = path.split('/')[-1].lower()
+    ext   = ('.' + fname.rsplit('.', 1)[-1]) if '.' in fname else ''
+
+    if fname.startswith('readme'):                                    return '<i class="fas fa-book"></i>'
+    if ext == '.ipynb':                                               return '<i class="fas fa-book-open"></i>'
+    if ext in {'.md', '.mdx', '.rst', '.txt'}:                       return '<i class="fas fa-file-alt"></i>'
+    if ext in {'.py', '.pyw'}:                                        return '<i class="fab fa-python"></i>'
+    if ext in {'.js', '.jsx', '.mjs', '.cjs'}:                        return '<i class="fab fa-js"></i>'
+    if ext in {'.ts', '.tsx'}:                                        return '<i class="fab fa-js"></i>'
+    if ext in {'.html', '.htm'}:                                      return '<i class="fab fa-html5"></i>'
+    if ext in {'.css', '.scss', '.sass', '.less'}:                    return '<i class="fab fa-css3-alt"></i>'
+    if ext in {'.vue', '.svelte'}:                                    return '<i class="fas fa-puzzle-piece"></i>'
+    if ext == '.go':                                                   return '<i class="fas fa-gopuram"></i>'
+    if ext == '.rs':                                                   return '<i class="fas fa-cog"></i>'
+    if ext in {'.java', '.kt', '.kts', '.scala', '.groovy'}:          return '<i class="fab fa-java"></i>'
+    if ext in {'.c', '.h', '.cpp', '.cc', '.cxx', '.hpp', '.hxx'}:   return '<i class="fas fa-microchip"></i>'
+    if ext == '.cs':                                                   return '<i class="fas fa-hashtag"></i>'
+    if ext in {'.rb', '.rake', '.gemspec'}:                           return '<i class="fas fa-gem"></i>'
+    if ext == '.php':                                                  return '<i class="fab fa-php"></i>'
+    if ext in {'.swift', '.m'}:                                       return '<i class="fab fa-apple"></i>'
+    if ext in {'.sh', '.bash', '.zsh', '.fish', '.ps1'}:             return '<i class="fas fa-terminal"></i>'
+    if ext in {'.json', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.xml'}: return '<i class="fas fa-cog"></i>'
+    if ext in {'.tf', '.hcl'}:                                        return '<i class="fas fa-cloud"></i>'
+    if ext in {'.sql'}:                                               return '<i class="fas fa-database"></i>'
+    if ext in {'.graphql', '.gql', '.proto'}:                         return '<i class="fas fa-project-diagram"></i>'
+    if ext in {'.dart'}:                                              return '<i class="fas fa-mobile-alt"></i>'
+    if ext in {'.r', '.R'}:                                           return '<i class="fas fa-chart-bar"></i>'
+    if fname in {'dockerfile', '.dockerfile'}:                        return '<i class="fab fa-docker"></i>'
+    if fname in {'makefile', 'cmakelists.txt', 'justfile'}:          return '<i class="fas fa-hammer"></i>'
+    return '<i class="fas fa-file-code"></i>'
+
+
+templates.env.globals['fileicon'] = _fileicon
 
 async_pipeline = AsyncAnalysisPipeline()
 
