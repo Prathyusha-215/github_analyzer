@@ -1,5 +1,4 @@
 import nbformat
-from io import StringIO
 from src.constants import Config
 from src.logger.logging_config import setup_logging
 
@@ -9,7 +8,7 @@ logger = setup_logging()
 class RepoProcessor:
     """
     Builds a structured text representation of an entire GitHub repository.
-    Handles READMEs, Jupyter notebooks, Python/JS source, and config files.
+    Language-agnostic — handles any stack via GitHubConnector.get_all_repo_files().
     """
 
     def __init__(self):
@@ -43,28 +42,39 @@ class RepoProcessor:
     def build_repo_summary(self, github_connector, repo):
         """
         Fetches all analyzable files from a repo and builds a structured
-        summary string for the LLM.
+        summary string for the LLM, prepended with rich repository metadata.
 
         Returns:
-            tuple: (repo_text: str, files_read: int, file_paths: list)
+            tuple: (repo_text: str, files_read: int, file_paths: list, metadata: dict)
         """
+        # 1. Fetch rich metadata (single cached object, no extra API calls for basics)
+        metadata = github_connector.get_repo_metadata(repo)
+
+        # 2. Collect file content (single git-tree API call + per-file content fetches)
         raw_content, files_read, file_paths = github_connector.get_all_repo_files(
             repo, max_chars=self.max_chars
         )
 
         if not raw_content:
             logger.warning(f"No content collected from repo '{repo.name}'")
-            return "", 0, []
+            return "", 0, [], metadata
 
-        stars = repo.stargazers_count
-        language = repo.language or "Unknown"
-        description = repo.description or "No description provided"
-
+        # 3. Build rich header for LLM context
+        topics_str  = ", ".join(metadata["topics"]) if metadata["topics"] else "None"
         header = (
-            f"REPOSITORY: {repo.full_name}\n"
-            f"Language: {language} | Stars: {stars}\n"
-            f"Description: {description}\n"
-            f"{'='*60}\n"
+            f"REPOSITORY: {metadata['full_name']}\n"
+            f"Description: {metadata['description']}\n"
+            f"Language: {metadata['language']} | Stars: {metadata['stars']} | "
+            f"Forks: {metadata['forks']} | Open Issues: {metadata['open_issues']}\n"
+            f"License: {metadata['license']} | Visibility: {metadata['visibility']}\n"
+            f"Topics: {topics_str}\n"
+            f"Default Branch: {metadata['default_branch']}\n"
+            f"Created: {metadata['created_at']} | Last Updated: {metadata['last_updated']}\n"
+            f"{'=' * 60}\n"
         )
 
-        return header + raw_content, files_read, file_paths
+        logger.info(
+            f"Built summary for '{repo.full_name}': "
+            f"{files_read} files, {len(header) + len(raw_content)} chars"
+        )
+        return header + raw_content, files_read, file_paths, metadata

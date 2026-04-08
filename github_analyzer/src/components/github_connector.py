@@ -2,25 +2,83 @@ from github import Github, GithubException
 import time
 from src.constants import Config
 from src.logger.logging_config import setup_logging
-from src.exceptions.custom_exceptions import RepoNotFoundError
 
 logger = setup_logging()
 
-# File extensions to collect content from
+# ---------------------------------------------------------------------------
+# Language-agnostic file extensions — covers every major ecosystem
+# ---------------------------------------------------------------------------
 ANALYZABLE_EXTENSIONS = {
-    '.py', '.ipynb', '.md', '.txt', '.js', '.ts', '.jsx', '.tsx',
-    '.yaml', '.yml', '.json', '.toml', '.cfg', '.ini', '.env.example'
+    # Python
+    '.py', '.pyw', '.ipynb',
+    # JavaScript / TypeScript
+    '.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs',
+    # Web
+    '.html', '.htm', '.css', '.scss', '.sass', '.less', '.vue', '.svelte',
+    # Java / JVM
+    '.java', '.kt', '.kts', '.scala', '.groovy',
+    # C / C++ / C#
+    '.c', '.h', '.cpp', '.cc', '.cxx', '.hpp', '.hxx', '.cs',
+    # Go
+    '.go',
+    # Rust
+    '.rs',
+    # Ruby
+    '.rb', '.rake', '.gemspec',
+    # PHP
+    '.php',
+    # Swift / Objective-C
+    '.swift', '.m',
+    # Shell / Scripts
+    '.sh', '.bash', '.zsh', '.fish', '.ps1',
+    # Data / Config / Infra
+    '.json', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.env.example',
+    '.xml', '.proto',
+    # Documentation
+    '.md', '.mdx', '.rst', '.txt',
+    # SQL / Database
+    '.sql',
+    # Docker / Build
+    'Dockerfile', '.dockerfile',
+    # R
+    '.r', '.R',
+    # Dart / Flutter
+    '.dart',
+    # Elixir / Erlang
+    '.ex', '.exs', '.erl',
+    # Terraform / HCL
+    '.tf', '.hcl',
+    # GraphQL
+    '.graphql', '.gql',
 }
+
+# Files with no extension to treat as text
+ANALYZABLE_NAMES = {
+    'dockerfile', 'makefile', 'rakefile', 'gemfile', 'procfile',
+    'pipfile', 'justfile', 'cmakelists.txt', 'requirements.txt',
+    '.gitignore', '.editorconfig',
+}
+
 SKIP_DIRS = {
     'node_modules', '.git', '__pycache__', 'venv', 'env', '.venv',
-    'dist', 'build', '.idea', '.vscode', 'coverage', '.pytest_cache'
+    'dist', 'build', '.idea', '.vscode', 'coverage', '.pytest_cache',
+    'vendor', 'target', 'out', '.next', '.nuxt', 'bin', 'obj',
+    'packages', 'Pods', '.gradle', '.mvn',
 }
+
+MAX_FILE_SIZE_BYTES = 200_000   # skip files larger than 200 KB
+MAX_FILES_TOTAL    = 40         # cap total files read (content fetch)
+PER_FILE_CHAR_CAP  = 5_000      # chars extracted per file
 
 
 class GitHubConnector:
     def __init__(self):
         self.github_token = Config.GITHUB_TOKEN
-        self.g = Github(self.github_token) if self.github_token else None
+        self.g = Github(self.github_token, per_page=100) if self.github_token else None
+
+    # ------------------------------------------------------------------
+    # Rate-limit guard
+    # ------------------------------------------------------------------
 
     def _check_rate_limit(self):
         """Check remaining API calls and wait if necessary."""
@@ -33,13 +91,15 @@ class GitHubConnector:
         if remaining < 10:
             wait_time = (reset_time - time.time()) + 60
             if wait_time > 0:
-                logger.warning(f"Rate limit low ({remaining} remaining). Waiting {wait_time:.0f} seconds...")
+                logger.warning(
+                    f"Rate limit low ({remaining} remaining). Waiting {wait_time:.0f}s..."
+                )
                 time.sleep(wait_time)
 
         return remaining
 
     # ------------------------------------------------------------------
-    # Primary method: fetch repo directly from URL
+    # Primary: fetch repo from URL
     # ------------------------------------------------------------------
 
     def get_repo_by_url(self, github_url):
@@ -70,100 +130,176 @@ class GitHubConnector:
             return None
 
     # ------------------------------------------------------------------
-    # Whole-repo file collector
+    # Rich metadata helper
     # ------------------------------------------------------------------
 
-    def get_all_repo_files(self, repo, max_chars=15000):
+    def get_repo_metadata(self, repo):
         """
-        Fetches content from the entire repository.
-        Prioritizes: README > notebooks > Python/JS source > configs.
+        Returns a rich dict of repository metadata for display and LLM context.
+        """
+        try:
+            topics = repo.get_topics() if repo else []
+        except Exception:
+            topics = []
+
+        try:
+            license_name = repo.license.name if repo.license else "None"
+        except Exception:
+            license_name = "Unknown"
+
+        try:
+            last_updated = repo.updated_at.strftime("%Y-%m-%d") if repo.updated_at else "Unknown"
+            created_at   = repo.created_at.strftime("%Y-%m-%d") if repo.created_at else "Unknown"
+        except Exception:
+            last_updated = created_at = "Unknown"
+
+        return {
+            "full_name":     repo.full_name,
+            "description":   repo.description or "No description provided",
+            "language":      repo.language or "Unknown",
+            "stars":         repo.stargazers_count,
+            "forks":         repo.forks_count,
+            "open_issues":   repo.open_issues_count,
+            "topics":        topics,
+            "license":       license_name,
+            "visibility":    "Private" if repo.private else "Public",
+            "default_branch": repo.default_branch,
+            "created_at":    created_at,
+            "last_updated":  last_updated,
+        }
+
+    # ------------------------------------------------------------------
+    # Whole-repo file collector — single git-tree API call (no depth limit)
+    # ------------------------------------------------------------------
+
+    def get_all_repo_files(self, repo, max_chars=60_000):
+        """
+        Fetches content from the entire repository using a single recursive
+        git-tree API call — no depth limit.
+
+        File priority order:
+            README > source code > notebooks > config/docs
 
         Returns:
             tuple: (content_text: str, files_read: int, file_paths: list)
         """
-        readme_files = []
-        notebook_files = []
-        source_files = []
-        config_files = []
+        self._check_rate_limit()
 
-        def walk_tree(path="", depth=0):
-            if depth > 5:
-                return
-            self._check_rate_limit()
+        # ── 1. Fetch the full file tree (1 API call) ────────────────────
+        try:
+            tree = repo.get_git_tree(repo.default_branch, recursive=True)
+        except GithubException:
+            # Fallback: try HEAD sha
             try:
-                contents = repo.get_contents(path)
-                if not isinstance(contents, list):
-                    contents = [contents]
-                for item in contents:
-                    if item.type == "dir":
-                        if item.name.lower() not in SKIP_DIRS:
-                            walk_tree(item.path, depth + 1)
-                    elif item.type == "file":
-                        name_lower = item.name.lower()
-                        ext = ('.' + name_lower.rsplit('.', 1)[-1]) if '.' in name_lower else ''
-
-                        # Skip large and non-text files
-                        if item.size > 80000:
-                            continue
-                        if ext not in ANALYZABLE_EXTENSIONS:
-                            continue
-
-                        if name_lower.startswith('readme'):
-                            readme_files.append(item)
-                        elif ext == '.ipynb':
-                            notebook_files.append(item)
-                        elif ext in {'.py', '.js', '.ts', '.jsx', '.tsx'}:
-                            source_files.append(item)
-                        else:
-                            config_files.append(item)
+                sha = repo.get_commits()[0].sha
+                tree = repo.get_git_tree(sha, recursive=True)
             except Exception as e:
-                logger.warning(f"Could not walk path '{path}': {e}")
+                logger.error(f"Could not fetch git tree for {repo.full_name}: {e}")
+                return "", 0, []
 
-        walk_tree()
+        # ── 2. Filter and bucket every blob in the tree ─────────────────
+        readme_items   = []
+        notebook_items = []
+        source_items   = []
+        config_items   = []
 
-        collected = []
-        total_chars = 0
-        files_read = 0
-        file_paths = []  # Track names of analyzed files
+        for element in tree.tree:
+            if element.type != "blob":
+                continue
 
-        def read_item(item, label):
-            nonlocal total_chars, files_read
+            path       = element.path
+            path_lower = path.lower()
+            filename   = path.split('/')[-1]
+            fname_lower = filename.lower()
+
+            # Skip files inside blacklisted directories
+            parts = path_lower.split('/')
+            if any(p in SKIP_DIRS for p in parts[:-1]):
+                continue
+
+            # Skip oversized files
+            size = element.size or 0
+            if size > MAX_FILE_SIZE_BYTES:
+                continue
+
+            # Determine extension
+            if '.' in filename:
+                ext = '.' + filename.rsplit('.', 1)[-1].lower()
+            else:
+                ext = ''
+
+            # Check if analyzable
+            analyzable = (
+                ext in ANALYZABLE_EXTENSIONS
+                or fname_lower in ANALYZABLE_NAMES
+            )
+            if not analyzable:
+                continue
+
+            # Bucket by priority
+            if fname_lower.startswith('readme'):
+                readme_items.append(element)
+            elif ext == '.ipynb':
+                notebook_items.append(element)
+            elif ext in {
+                '.py', '.pyw', '.js', '.jsx', '.ts', '.tsx', '.mjs',
+                '.go', '.rs', '.java', '.kt', '.scala', '.rb', '.php',
+                '.c', '.cpp', '.h', '.hpp', '.cs', '.swift', '.dart',
+                '.ex', '.exs', '.r', '.R', '.sh', '.ps1', '.vue', '.svelte',
+                '.html', '.css', '.scss',
+            }:
+                source_items.append(element)
+            else:
+                config_items.append(element)
+
+        # ── 3. Read content in priority order, up to MAX_FILES_TOTAL ────
+        priority_queue = readme_items + notebook_items + source_items + config_items
+
+        collected    = []
+        total_chars  = 0
+        files_read   = 0
+        file_paths   = []
+
+        for element in priority_queue:
+            if files_read >= MAX_FILES_TOTAL:
+                logger.info(f"Reached {MAX_FILES_TOTAL}-file cap — stopping.")
+                break
             if total_chars >= max_chars:
-                return
+                break
+
             try:
-                content = item.decoded_content.decode('utf-8', errors='replace')
-                snippet = content[:3000]  # Cap per-file at 3000 chars
-                sep = '=' * 60
-                entry = f"\n{sep}\n[{label}] {item.path}\n{sep}\n{snippet}\n"
+                # Fetch blob content via the contents API
+                content_file = repo.get_contents(element.path)
+                raw = content_file.decoded_content.decode('utf-8', errors='replace')
+                snippet = raw[:PER_FILE_CHAR_CAP]
+
+                sep   = '=' * 60
+                label = _guess_label(element.path)
+                entry = f"\n{sep}\n[{label}] {element.path}\n{sep}\n{snippet}\n"
+
                 collected.append(entry)
                 total_chars += len(entry)
-                files_read += 1
-                file_paths.append(item.path)  # Record the file path
+                files_read  += 1
+                file_paths.append(element.path)
+
             except Exception as e:
-                logger.warning(f"Could not read {item.path}: {e}")
+                logger.warning(f"Could not read {element.path}: {e}")
 
-        # Prioritized collection
-        for item in readme_files:
-            read_item(item, "README")
-        for item in notebook_files:
-            read_item(item, "NOTEBOOK")
-        for item in source_files:
-            read_item(item, "SOURCE")
-        for item in config_files:
-            read_item(item, "CONFIG")
-
-        logger.info(f"Collected {files_read} files ({total_chars} chars) from '{repo.name}'")
+        logger.info(
+            f"Collected {files_read} files ({total_chars} chars) "
+            f"from '{repo.full_name}' (tree had {len(priority_queue)} candidates)"
+        )
         return ''.join(collected), files_read, file_paths
 
     # ------------------------------------------------------------------
-    # Legacy methods (kept for batch Excel mode)
+    # Legacy method — batch Excel mode
     # ------------------------------------------------------------------
 
     def get_latest_repo_by_keywords(self, username, keywords=None):
         """Returns the latest (or keyword-matching) repo for a GitHub username."""
         self._check_rate_limit()
         try:
-            user = self.g.get_user(username)
+            user  = self.g.get_user(username)
             repos = user.get_repos(sort="created", direction="desc")
 
             if not keywords or len(keywords) == 0:
@@ -184,28 +320,28 @@ class GitHubConnector:
             logger.error(f"Error fetching repos for {username}: {e}")
             return None
 
-    def get_notebook_file(self, repo):
-        """
-        Finds the first .ipynb file in the repository.
-        Kept for backward compatibility with batch mode.
-        """
-        def search_contents(path="", depth=0, max_depth=2):
-            if depth > max_depth:
-                return None
-            self._check_rate_limit()
-            try:
-                contents = repo.get_contents(path)
-                for item in contents:
-                    if item.type == "file" and item.name.endswith(".ipynb"):
-                        return item
-                    elif item.type == "dir" and depth < max_depth:
-                        if item.name in ["", "notebooks", "src", "code", "project"]:
-                            result = search_contents(item.path, depth + 1, max_depth)
-                            if result:
-                                return result
-                return None
-            except Exception as e:
-                logger.error(f"Error searching {path} in {repo.name}: {e}")
-                return None
 
-        return search_contents()
+# ---------------------------------------------------------------------------
+# Internal helpers
+# ---------------------------------------------------------------------------
+
+def _guess_label(path: str) -> str:
+    """Returns a display label based on the file extension."""
+    fname = path.split('/')[-1].lower()
+    if fname.startswith('readme'):
+        return 'README'
+    ext = ('.' + fname.rsplit('.', 1)[-1]) if '.' in fname else ''
+    if ext == '.ipynb':
+        return 'NOTEBOOK'
+    if ext in {'.md', '.mdx', '.rst', '.txt'}:
+        return 'DOCS'
+    if ext in {'.json', '.yaml', '.yml', '.toml', '.ini', '.cfg',
+               '.xml', '.tf', '.hcl', '.proto', '.graphql', '.gql'}:
+        return 'CONFIG'
+    if fname in ANALYZABLE_NAMES:
+        return 'BUILD'
+    if ext == '.sql':
+        return 'SQL'
+    if ext in {'.sh', '.bash', '.zsh', '.ps1'}:
+        return 'SCRIPT'
+    return 'SOURCE'
