@@ -1,6 +1,5 @@
 
 import os
-from markupsafe import Markup
 import shutil
 import uuid
 import logging
