@@ -79,7 +79,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     """Render the home page."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html", context={})
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
@@ -104,8 +104,7 @@ async def analyze_single(
     try:
         github_url = github_url.strip()
         if not github_url or "github.com" not in github_url:
-            return templates.TemplateResponse("index.html", {
-                "request": request,
+            return templates.TemplateResponse(request=request, name="index.html", context={
                 "error": "Please enter a valid GitHub repository URL (e.g., https://github.com/user/repo)."
             })
 
@@ -121,8 +120,7 @@ async def analyze_single(
 
     except Exception as e:
         logger.error(f"Single-repo analysis failed: {e}")
-        return templates.TemplateResponse("index.html", {
-            "request": request,
+        return templates.TemplateResponse(request=request, name="index.html", context={
             "error": f"Error starting analysis: {str(e)}"
         })
 
@@ -145,8 +143,7 @@ async def analyze(
     """
     try:
         if not students_file.filename.endswith(('.xlsx', '.xls')):
-            return templates.TemplateResponse("index.html", {
-                "request": request,
+            return templates.TemplateResponse(request=request, name="index.html", context={
                 "error": "Invalid file. Please upload an Excel file (.xlsx or .xls)."
             })
 
@@ -170,8 +167,7 @@ async def analyze(
 
     except Exception as e:
         logger.error(f"Batch upload failed: {e}")
-        return templates.TemplateResponse("index.html", {
-            "request": request,
+        return templates.TemplateResponse(request=request, name="index.html", context={
             "error": f"Error starting analysis: {str(e)}"
         })
 
@@ -183,7 +179,7 @@ async def analyze(
 @app.get("/status-page/{task_id}", response_class=HTMLResponse)
 async def status_page(request: Request, task_id: str):
     """Render the processing status page."""
-    return templates.TemplateResponse("processing.html", {"request": request, "task_id": task_id})
+    return templates.TemplateResponse(request=request, name="processing.html", context={"task_id": task_id})
 
 
 @app.get("/api/status/{task_id}")
@@ -208,8 +204,7 @@ async def results_page(request: Request, task_id: str):
     success_rate = round((successful / total * 100), 1) if total > 0 else 0
     mode = task.get("mode", "batch")
 
-    return templates.TemplateResponse("results.html", {
-        "request": request,
+    return templates.TemplateResponse(request=request, name="results.html", context={
         "results": results,
         "total_repos": total,
         "successful": successful,
